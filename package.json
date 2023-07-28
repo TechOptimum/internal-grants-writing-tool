@@ -2,6 +2,12 @@
   "name": "internal-grants-writing-tool",
   "version": "0.1.0",
   "private": true,
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": false
+  },
   "scripts": {
     "build": "next build",
     "dev": "next dev",
