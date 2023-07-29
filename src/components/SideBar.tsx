@@ -1,5 +1,4 @@
 import {
-  HStack,
   VStack,
   Box,
   Link,
@@ -17,7 +16,6 @@ import {
   BsPersonGear,
 } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
-import { GiHamburgerMenu } from "react-icons/gi";
 import type { IconType } from "react-icons";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
