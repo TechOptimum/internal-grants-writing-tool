@@ -10,7 +10,7 @@ export default function NavBar() {
     <HStack
       w="100%"
       px="1rem"
-      py="0.7rem"
+      py="0.9rem"
       align="center"
       justify="space-between"
       borderBottom="1px solid"
