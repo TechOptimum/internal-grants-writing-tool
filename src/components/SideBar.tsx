@@ -23,12 +23,7 @@ export default function SideBar() {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <VStack
-      flexGrow={1}
-      borderRight="1px solid"
-      borderColor="gray.500"
-      align="end"
-    >
+    <VStack borderRight="1px solid" borderColor="gray.500" align="end" h="100%">
       <Box p="0.5rem">
         {isOpen ? (
           <Fade in={isOpen}>
