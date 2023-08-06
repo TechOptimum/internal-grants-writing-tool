@@ -1,11 +1,17 @@
-import { Image, Link, HStack, Avatar } from "@chakra-ui/react";
+import { Image, Link, HStack, Avatar, Tooltip } from "@chakra-ui/react";
 
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 
-export default function NavBar() {
-  const { isLoaded, isSignedIn, user } = useUser();
+interface NavBarProps {
+  onToggle: () => void
+}
 
+// useDisclosure is in parent file (index.tsx) so it can be used in both components. 
+// it is used here through props of onToggle which has a type saftey through NavBarProp.
+
+export default function NavBar({ onToggle }:NavBarProps) {
+  const { isLoaded, isSignedIn, user } = useUser();
   return (
     <HStack
       w="100%"
@@ -16,7 +22,23 @@ export default function NavBar() {
       borderBottom="1px solid"
       borderColor="gray.500"
     >
-      <Image w="120px" ml="1rem" src="/logo.png" alt="TechOptimum" />
+      <Tooltip
+        label="Open full navigation menu"
+        placement="right"
+        bg="gray.800"
+        borderRadius="8px"
+        p="8px"
+        fontSize="16px"
+      >
+        <Image
+          w="120px"
+          ml="1rem"
+          src="/logo.png"
+          alt="TechOptimum"
+          cursor="pointer"
+          onClick={onToggle}
+        />
+      </Tooltip>
       <HStack>
         <HStack mx="0.5rem">
           <NavLink href="/">Dashboard</NavLink>

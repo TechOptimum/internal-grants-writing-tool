@@ -13,10 +13,13 @@ import {
   Image,
   Flex,
   Avatar,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 
 export default function Home() {
+  const {isOpen, onToggle} = useDisclosure()
+
   return (
     <>
       <Head>
@@ -24,9 +27,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <VStack align="start" justify="start" gap={0} h="100dvh">
-        <NavBar />
+        <NavBar onToggle={onToggle} />
         <HStack flexGrow={1} h="100dvh" w="100dvw">
-          <SideBar />
+          <SideBar isOpen={isOpen} />
           <HStack
             h="100%"
             w="100%"

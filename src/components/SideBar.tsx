@@ -3,12 +3,9 @@ import {
   Box,
   Link,
   Icon,
-  CloseButton,
   Fade,
-  Button,
   Tooltip,
 } from "@chakra-ui/react";
-import { useDisclosure } from "@chakra-ui/react";
 import { AiOutlineHome } from "react-icons/ai";
 import {
   BsChatLeftText,
@@ -17,30 +14,18 @@ import {
 } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
 import type { IconType } from "react-icons";
-import { HamburgerIcon } from "@chakra-ui/icons";
 
-export default function SideBar() {
-  const { isOpen, onToggle } = useDisclosure();
+interface SideBarProps {
+  isOpen: boolean,
+}
+
+// useDisclosure is in parent file (index.tsx) so it can be used in both components. 
+// it is used here through props of onToggle which has a type saftey through SideBarProp.
+
+export default function SideBar({isOpen}: SideBarProps) {
 
   return (
     <VStack borderRight="1px solid" borderColor="gray.500" align="end" h="100%">
-      <Box p="0.5rem">
-        {isOpen ? (
-          <Fade in={isOpen}>
-            <CloseButton size="lg" color="gray.600" onClick={onToggle} />
-          </Fade>
-        ) : (
-          <Fade in={!isOpen}>
-            <Button p="0" onClick={onToggle} backgroundColor="transparent">
-              <HamburgerIcon
-                fontSize="xl"
-                color="gray.600"
-                backgroundColor="transparent"
-              />
-            </Button>
-          </Fade>
-        )}
-      </Box>
       <VStack h="100%" justifyContent="space-between">
         <VStack
           h="100%"
