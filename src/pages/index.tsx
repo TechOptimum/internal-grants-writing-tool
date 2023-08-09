@@ -14,12 +14,11 @@ import {
   Flex,
   Avatar,
   useDisclosure,
+  Wrap,
 } from "@chakra-ui/react";
 
 export default function Home() {
-  const {isOpen, onToggle, onClose} = useDisclosure()
-
-
+  const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
     <>
@@ -28,7 +27,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <VStack align="start" justify="start" gap={0} h="100dvh">
-        <NavBar onToggle={onToggle} isOpen={isOpen}  />
+        <NavBar onToggle={onToggle} isOpen={isOpen} />
         <HStack flexGrow={1} h="100dvh" w="100dvw">
           <SideBar isOpen={isOpen} onClose={onClose} />
           <HStack
@@ -38,35 +37,25 @@ export default function Home() {
             justify="space-evenly"
             align="start"
           >
-            <Stack w="50%">
+            <VStack w="100%" align="start">
               <Text fontSize="4xl" fontWeight="bold" mb="0.3rem">
                 Latest Grants
               </Text>
-              <Grant
-                title="Grant Opportunity For Project"
-                description="Grant Opportunity For Specific Project :)"
-                time="Today at 13:20"
-                imgUrl="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
-              />
-              <Grant
-                title="Grant Opportunity For Other Project"
-                description="Grant Opportunity For Not So Specific Project :("
-                time="Yesterday at 11:18"
-                imgUrl="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.acuity.com%2Fbinaries%2Fcontent%2Fgallery%2Facuitycms%2Fblogs%2Facuity-focus%2Fpaperwork.png&f=1&nofb=1&ipt=b49bb2637aa6665b8089606c770e3bf875cb5d286c360dbbc095c9d82aa2ed9d&ipo=images"
-              />
-            </Stack>
-            <Stack w="50%">
-              <Text fontSize="4xl" fontWeight="bold" mb="0.3rem">
-                Pending Feedback
-              </Text>
-              <Feedback
-                title="Grant Draft"
-                description="Request for grant opportunity"
-                user="John Smith"
-                time="Today at 13:50"
-                imgUrl=""
-              />
-            </Stack>
+              <Wrap>
+                <Grant
+                  title="Grant Opportunity For Project"
+                  description="Grant Opportunity For Specific Project :)"
+                  time="Today at 13:20"
+                  imgUrl="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
+                />
+                <Grant
+                  title="Grant Opportunity For Other Project"
+                  description="Grant Opportunity For Not So Specific Project :("
+                  time="Yesterday at 11:18"
+                  imgUrl="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.acuity.com%2Fbinaries%2Fcontent%2Fgallery%2Facuitycms%2Fblogs%2Facuity-focus%2Fpaperwork.png&f=1&nofb=1&ipt=b49bb2637aa6665b8089606c770e3bf875cb5d286c360dbbc095c9d82aa2ed9d&ipo=images"
+                />
+              </Wrap>
+            </VStack>
           </HStack>
         </HStack>
       </VStack>

@@ -16,12 +16,12 @@ import {
   DrawerFooter,
 } from "@chakra-ui/react";
 
-import {CloseIcon} from '@chakra-ui/icons'
-import { AiOutlineHome } from 'react-icons/ai';
-import { 
-  BsChatLeftText, 
-  BsFileEarmarkText, 
-  BsPersonGear 
+import { CloseIcon } from "@chakra-ui/icons";
+import { AiOutlineHome } from "react-icons/ai";
+import {
+  BsChatLeftText,
+  BsFileEarmarkText,
+  BsPersonGear,
 } from "react-icons/bs";
 
 import { FiSettings } from "react-icons/fi";
@@ -34,7 +34,7 @@ interface SideBarProps {
 }
 
 export default function SideBar({ isOpen, onClose }: SideBarProps) {
-  const [isSmallerThan500] = useMediaQuery('(max-width: 501px)');
+  const [isSmallerThan500] = useMediaQuery("(max-width: 501px)");
 
   if (isSmallerThan500) {
     return (
@@ -42,7 +42,12 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
         <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
           <DrawerOverlay />
           <DrawerContent>
-            <DrawerHeader borderBottomWidth="1px" display="flex" alignItems="center" justifyContent="space-between">
+            <DrawerHeader
+              borderBottomWidth="1px"
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+            >
               <div>SideBar</div>
               <CloseIcon onClick={onClose} cursor="pointer" />
             </DrawerHeader>
@@ -74,7 +79,12 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
 
   return (
     <>
-      <VStack borderRight="1px solid" borderColor="gray.500" align="end" h="100%">
+      <VStack
+        borderRight="1px solid"
+        borderColor="gray.500"
+        align="end"
+        h="100%"
+      >
         <VStack h="100%" justifyContent="space-between">
           <VStack
             h="100%"
@@ -86,20 +96,45 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
             justify="space-between"
           >
             <VStack w="100%">
-              <SideBtn href="/" icon={AiOutlineHome} isOpen={isOpen} isSmallerThan500={isSmallerThan500}>
+              <SideBtn
+                href="/"
+                icon={AiOutlineHome}
+                isOpen={isOpen}
+                isSmallerThan500={isSmallerThan500}
+              >
                 Home
               </SideBtn>
-              <SideBtn href="/" icon={BsFileEarmarkText} isOpen={isOpen} isSmallerThan500={isSmallerThan500}>
+              <SideBtn
+                href="/"
+                icon={BsFileEarmarkText}
+                isOpen={isOpen}
+                isSmallerThan500={isSmallerThan500}
+              >
                 Grants
               </SideBtn>
-              <SideBtn href="/" icon={BsChatLeftText} isOpen={isOpen} isSmallerThan500={isSmallerThan500}>
+              <SideBtn
+                href="/"
+                icon={BsChatLeftText}
+                isOpen={isOpen}
+                isSmallerThan500={isSmallerThan500}
+              >
                 Feedback
               </SideBtn>
-              <SideBtn href="/" icon={FiSettings} isOpen={isOpen} isSmallerThan500={isSmallerThan500}>
+              <SideBtn
+                href="/"
+                icon={FiSettings}
+                isOpen={isOpen}
+                isSmallerThan500={isSmallerThan500}
+              >
                 Settings
               </SideBtn>
             </VStack>
-            <SideBtn href="/" icon={BsPersonGear} isOpen={isOpen} isSmallerThan500={isSmallerThan500}>
+            <SideBtn
+              href="/"
+              icon={BsPersonGear}
+              isOpen={isOpen}
+              isSmallerThan500={isSmallerThan500}
+            >
               User Settings
             </SideBtn>
           </VStack>
@@ -129,7 +164,7 @@ const SideBtn: React.FC<SideBtnProps> = ({
       label={children}
       placement="right"
       hasArrow
-      isDisabled={(isOpen && isSmallerThan500) || !isOpen}
+      isDisabled={(isOpen && isSmallerThan500) ?? !isOpen}
     >
       <Box
         w={isOpen && !isSmallerThan500 ? "15rem" : "3.4rem"}
@@ -163,7 +198,7 @@ const SideBtn: React.FC<SideBtnProps> = ({
       </Box>
     </Tooltip>
   );
-}
+};
 
 const MobileNavLink = ({
   href,
