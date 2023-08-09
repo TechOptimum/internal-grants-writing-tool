@@ -39,38 +39,35 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
   if (isSmallerThan500) {
     return (
       <>
-<Drawer placement="left" onClose={onClose} isOpen={isOpen}>
-  <DrawerOverlay />
-  <DrawerContent>
-    <DrawerHeader borderBottomWidth="1px" display="flex" alignItems="center" justifyContent="space-between">
-      <div>SideBar</div>
-      <CloseIcon onClick={onClose} cursor="pointer" />
-    </DrawerHeader>
-    <DrawerBody>
-      <MobileNavLink href="/" icon={<AiOutlineHome size={20} />}>
-        Home
-      </MobileNavLink>
-      <MobileNavLink href="/" icon={<BsFileEarmarkText size={20} />}>
-        Grants
-      </MobileNavLink>
-      <MobileNavLink href="/" icon={<BsChatLeftText size={20} />}>
-        Feedback
-      </MobileNavLink>
-      <MobileNavLink href="/" icon={<FiSettings size={20} />}>
-        Settings
-      </MobileNavLink>
-      {/* Moved User Settings to the bottom */}
-    </DrawerBody>
-    <DrawerFooter borderTopWidth="1px">
-      <MobileNavLink href="/" icon={<BsPersonGear size={20} />}>
-        User Settings
-      </MobileNavLink>
-    </DrawerFooter>
-  </DrawerContent>
-</Drawer>
-
-
-
+        <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+          <DrawerOverlay />
+          <DrawerContent>
+            <DrawerHeader borderBottomWidth="1px" display="flex" alignItems="center" justifyContent="space-between">
+              <div>SideBar</div>
+              <CloseIcon onClick={onClose} cursor="pointer" />
+            </DrawerHeader>
+            <DrawerBody>
+              <MobileNavLink href="/" icon={<AiOutlineHome size={20} />}>
+                Home
+              </MobileNavLink>
+              <MobileNavLink href="/" icon={<BsFileEarmarkText size={20} />}>
+                Grants
+              </MobileNavLink>
+              <MobileNavLink href="/" icon={<BsChatLeftText size={20} />}>
+                Feedback
+              </MobileNavLink>
+              <MobileNavLink href="/" icon={<FiSettings size={20} />}>
+                Settings
+              </MobileNavLink>
+              {/* Moved User Settings to the bottom */}
+            </DrawerBody>
+            <DrawerFooter borderTopWidth="1px">
+              <MobileNavLink href="/" icon={<BsPersonGear size={20} />}>
+                User Settings
+              </MobileNavLink>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       </>
     );
   }
