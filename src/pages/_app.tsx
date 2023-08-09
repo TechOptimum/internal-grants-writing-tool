@@ -3,17 +3,21 @@ import { api } from "~/utils/api";
 
 import { ClerkProvider } from "@clerk/nextjs";
 
-import { ChakraProvider, HStack } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
+import Layout from "~/components/Layout";
 
 import "~/styles/globals.css";
-const MyApp: AppType = ({ Component, pageProps }) => {
+
+const App: AppType = ({ Component, pageProps }) => {
   return (
     <ChakraProvider>
       <ClerkProvider>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </ClerkProvider>
     </ChakraProvider>
   );
 };
 
-export default api.withTRPC(MyApp);
+export default api.withTRPC(App);
