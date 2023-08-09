@@ -1,17 +1,36 @@
-import { Image, Link, HStack, Avatar, Tooltip } from "@chakra-ui/react";
+import {
+  Image,
+  Link,
+  HStack,
+  useMediaQuery,
+  Tooltip,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Flex,
+} from "@chakra-ui/react";
 
-import { useUser } from "@clerk/nextjs";
+import {
+  HamburgerIcon,
+  ViewIcon,
+  EditIcon,
+  AttachmentIcon,
+  TimeIcon,
+} from "@chakra-ui/icons";
+
+import { UserButton } from "@clerk/clerk-react";
 import { useRouter } from "next/router";
 
 interface NavBarProps {
-  onToggle: () => void
+  isOpen: boolean;
+  onToggle: () => void;
 }
 
-// useDisclosure is in parent file (index.tsx) so it can be used in both components. 
-// it is used here through props of onToggle which has a type saftey through NavBarProp.
+export default function NavBar({ isOpen, onToggle }: NavBarProps) {
+  const [isSmallerThan500] = useMediaQuery('(min-width: 501px)'); // Adjusted media query condition
 
-export default function NavBar({ onToggle }:NavBarProps) {
-  const { isLoaded, isSignedIn, user } = useUser();
   return (
     <HStack
       w="100%"
@@ -23,7 +42,7 @@ export default function NavBar({ onToggle }:NavBarProps) {
       borderColor="gray.500"
     >
       <Tooltip
-        label="Open full navigation menu"
+        label={!isOpen ? "Open full navigation menu" : "Close full navigation menu"}
         placement="right"
         bg="gray.800"
         borderRadius="8px"
@@ -39,23 +58,45 @@ export default function NavBar({ onToggle }:NavBarProps) {
           onClick={onToggle}
         />
       </Tooltip>
-      <HStack>
-        <HStack mx="0.5rem">
-          <NavLink href="/">Dashboard</NavLink>
-          <NavLink href="/">Writing</NavLink>
-          <NavLink href="/">Upload</NavLink>
-          <NavLink href="/">History</NavLink>
-        </HStack>
-        {isSignedIn && isLoaded && user ? (
-          <Avatar size="sm" src={user.imageUrl} />
-        ) : (
-          <Link href="/sign-in">Sign In</Link>
-        )}
-      </HStack>
+      
+      {isSmallerThan500 ? (
+        <>
+          <HStack>
+            <HStack mx="0.5rem">
+              <NavLink href="/">Dashboard</NavLink>
+              <NavLink href="/">Writing</NavLink>
+              <NavLink href="/">Upload</NavLink>
+              <NavLink href="/">History</NavLink>
+            </HStack>
+            <UserButton />
+          </HStack>
+        </>
+      ) : (
+<Flex alignItems="center"> 
+  <UserButton />
+  <Menu>
+    <MenuButton
+      as={IconButton}
+      aria-label="Options"
+      icon={<HamburgerIcon />}
+      variant="outline"
+      marginLeft= '10px'
+    />
+    <MenuList>
+      <MenuItem icon={<ViewIcon />} marginTop="0.5rem">
+        Dashboard
+      </MenuItem>
+      <MenuItem icon={<EditIcon />}>Writing</MenuItem>
+      <MenuItem icon={<AttachmentIcon />}>Upload</MenuItem>
+      <MenuItem icon={<TimeIcon />}>History</MenuItem>
+    </MenuList>
+  </Menu>
+</Flex>
+
+      )}
     </HStack>
   );
 }
-
 const NavLink = ({ href, children }: { href: string; children: string }) => {
   const { pathname } = useRouter();
   const color =

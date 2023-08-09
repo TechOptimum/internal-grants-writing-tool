@@ -15,21 +15,22 @@ import {
   Avatar,
   useDisclosure,
 } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
 
 export default function Home() {
-  const {isOpen, onToggle} = useDisclosure()
+  const {isOpen, onToggle, onClose} = useDisclosure()
+
+
 
   return (
     <>
       <Head>
-        <title>Dashboard | TechOptimum Grants Witing Tool</title>
+        <title>Dashboard | TechOptimum Grants Writing Tool</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <VStack align="start" justify="start" gap={0} h="100dvh">
-        <NavBar onToggle={onToggle} />
+        <NavBar onToggle={onToggle} isOpen={isOpen}  />
         <HStack flexGrow={1} h="100dvh" w="100dvw">
-          <SideBar isOpen={isOpen} />
+          <SideBar isOpen={isOpen} onClose={onClose} />
           <HStack
             h="100%"
             w="100%"

@@ -3,10 +3,9 @@ import { api } from "~/utils/api";
 
 import { ClerkProvider } from "@clerk/nextjs";
 
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, HStack } from "@chakra-ui/react";
 
 import "~/styles/globals.css";
-
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <ChakraProvider>
