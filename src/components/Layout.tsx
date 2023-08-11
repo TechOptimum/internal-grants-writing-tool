@@ -27,7 +27,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           <HStack
             h="100%"
             w="100%"
-            p="2rem"
+            p={{ base: "1rem", sm: "2rem" }}
             justify="space-evenly"
             align="start"
           >
