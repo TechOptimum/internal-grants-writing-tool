@@ -7,11 +7,21 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  Image,
-  Flex,
   Wrap,
+  HStack,
+  Button,
+  Box,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
-import Layout from "~/components/Layout";
+import { ArrowRightIcon } from "@chakra-ui/icons";
+import { useState } from "react";
 
 export default function Page() {
   return (
@@ -21,21 +31,24 @@ export default function Page() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <VStack w="100%" align="start">
-        <Text fontSize="4xl" fontWeight="bold" mb="0.3rem">
+        <Text fontSize="5xl" fontWeight="bold" mb="0.3rem">
           Latest Grants
         </Text>
-        <Wrap>
+        <Wrap w="100%">
           <Grant
             title="Grant Opportunity For Project"
             description="Grant Opportunity For Specific Project :)"
-            time="Today at 13:20"
-            imgUrl="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
+            footer="Available until October 13th, 2023"
           />
           <Grant
             title="Grant Opportunity For Other Project"
             description="Grant Opportunity For Not So Specific Project :("
-            time="Yesterday at 11:18"
-            imgUrl="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.acuity.com%2Fbinaries%2Fcontent%2Fgallery%2Facuitycms%2Fblogs%2Facuity-focus%2Fpaperwork.png&f=1&nofb=1&ipt=b49bb2637aa6665b8089606c770e3bf875cb5d286c360dbbc095c9d82aa2ed9d&ipo=images"
+            footer="Available until August 29th, 2023"
+          />
+          <Grant
+            title="Grant Opportunity For Certain Projects"
+            description="Yep..."
+            footer="Available until November 11th, 2023"
           />
         </Wrap>
       </VStack>
@@ -46,39 +59,76 @@ export default function Page() {
 const Grant = ({
   title,
   description,
-  time,
-  imgUrl,
+  footer,
 }: {
   title: string;
   description: string;
-  time: string;
-  imgUrl: string;
+  footer: string;
 }) => {
+  const [isGroupHover, setIsGroupHover] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
-    <Card size="sm" overflow="hidden" variant="outline" my="0.2rem">
-      <Flex>
-        <Image
-          src={imgUrl}
-          alt={title}
-          objectFit="cover"
-          maxW={{ base: "100%", sm: "200px" }}
-        />
-        <Stack>
-          <CardHeader>
-            <Text fontSize="xl" fontWeight="semibold">
-              {title}
-            </Text>
-          </CardHeader>
-          <CardBody>
-            <Text fontSize="md">{description}</Text>
-          </CardBody>
-          <CardFooter>
-            <Text fontSize="sm" color="gray.500">
-              {time}
-            </Text>
-          </CardFooter>
-        </Stack>
-      </Flex>
-    </Card>
+    <>
+      <Button h="auto" p="0px" my="0.3rem" w="100%" onClick={onOpen}>
+        <Card
+          size="sm"
+          variant="outline"
+          w="100%"
+          transitionDuration="100ms"
+          _hover={{
+            backgroundColor: "rgb(240,240,240)",
+          }}
+          onMouseEnter={() => setIsGroupHover(true)}
+          onMouseLeave={() => setIsGroupHover(false)}
+        >
+          <HStack justify="space-between" pe="1rem">
+            <Stack>
+              <CardHeader fontSize="xl" fontWeight="bold">
+                {title}
+              </CardHeader>
+              <CardFooter color="blackAlpha.700" fontWeight="medium">
+                {footer}
+              </CardFooter>
+            </Stack>
+            <Box
+              transitionDuration="100ms"
+              transform={isGroupHover ? "translateX(5px)" : "translateX(0px)"}
+            >
+              <ArrowRightIcon />
+            </Box>
+          </HStack>
+        </Card>
+      </Button>
+      <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader fontSize="xl" fontWeight="bold">
+            {title}
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+            Consequuntur nobis atque, aperiam reprehenderit tempora enim
+            architecto sequi optio, laboriosam, dolorum voluptatibus iste sunt
+            ipsam. Soluta minus aut maxime voluptatibus totam.
+          </ModalBody>
+
+          <ModalFooter>
+            <HStack justify="space-between" w="100%">
+              <Text>{footer}</Text>
+              <HStack>
+                <Button colorScheme="blue" mr={3} onClick={onClose}>
+                  Start Grant
+                </Button>
+                <Button variant="ghost" onClick={onClose}>
+                  Close
+                </Button>
+              </HStack>
+            </HStack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };

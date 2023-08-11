@@ -1,4 +1,4 @@
-import { Center, Flex, Link, Text, VStack } from "@chakra-ui/react";
+import { Center, Link, Text, VStack } from "@chakra-ui/react";
 import { useUser } from "@clerk/nextjs";
 
 export default function Page() {
