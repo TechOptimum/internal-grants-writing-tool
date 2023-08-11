@@ -5,7 +5,6 @@ import {
   VStack,
   Card,
   CardHeader,
-  CardBody,
   CardFooter,
   Wrap,
   HStack,

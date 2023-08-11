@@ -164,7 +164,7 @@ const SideBtn: React.FC<SideBtnProps> = ({
       label={children}
       placement="right"
       hasArrow
-      isDisabled={(isOpen && isSmallerThan500) ?? !isOpen}
+      isDisabled={isOpen || isSmallerThan500}
     >
       <Box
         w={isOpen && !isSmallerThan500 ? "15rem" : "3.4rem"}
