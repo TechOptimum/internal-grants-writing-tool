@@ -26,7 +26,7 @@ const CreateGrant = () => {
 
 
   const size = '3xl'
-  const createGrant = api.grants.creats.useMutation({
+  const createGrant = api.grants.create.useMutation({
     onSucess: () => {
       void refetchGrants()
     }
