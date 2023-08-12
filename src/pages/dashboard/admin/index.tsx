@@ -9,9 +9,14 @@ import GrantPost from './components/GrantPost';
 const Admin = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data: grants } = api.grants.getGrants.useQuery();
+  const { data: grants, refetch: refetchGrants } = api.grants.getGrants.useQuery();
 
-  const deleteGrant = api.grants.deleteGrant.useMutation();
+  const deleteGrant = api.grants.deleteGrant.useMutation({
+    onSucess: () => {
+      void refetchGrants()
+    }
+  });
+  
 
   const handleDeleteClick = async (id: string) => {
     try {
