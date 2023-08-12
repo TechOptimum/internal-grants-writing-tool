@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { api } from '~/utils/api';
 import { Button, Text, Modal, ModalBody, ModalOverlay, ModalContent, ModalCloseButton, useDisclosure, VStack, Wrap, Card, HStack, Stack, CardHeader, CardFooter, Box, ModalHeader, ModalFooter,   } from '@chakra-ui/react';
 import { ArrowRightIcon } from '@chakra-ui/icons';
-import CreateGrant from './components/CreateGrant';
-import GrantPost from './components/GrantPost';
+import CreateGrant from '~/components/CreateGrant';
+import GrantPost from '~/components/GrantPost';
 
 const Admin = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -12,7 +12,7 @@ const Admin = () => {
   const { data: grants, refetch: refetchGrants } = api.grants.getGrants.useQuery();
 
   const deleteGrant = api.grants.deleteGrant.useMutation({
-    onSucess: () => {
+    onSuccess: () => {
       void refetchGrants()
     }
   });

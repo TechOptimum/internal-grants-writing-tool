@@ -16,7 +16,6 @@ import { AiFillFileText } from 'react-icons/ai';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import Head from 'next/head';
 import { api } from '~/utils/api';
-import {refetchGrants} from './utils/refetch'
 
 interface CreateGrantProps {
   grant_id: string;
@@ -34,13 +33,14 @@ const CreateGrant = ({ grant_id, initialAmount, initialCriteria, initialDescript
   const [sucessAlert, setsucessAlert] = useState(false);
   const [errorAlert, seterrorAlert] = useState(false);
 
+  const { refetch } = api.grants.getGrants.useQuery();
 
-  const size = '3xl'
+  const size = '3xl';
 
 
   const updateGrant = api.grants.updateGrant.useMutation({
     onSuccess: () => {
-      void refetchGrants()
+      void refetch()
     }
   });
 
