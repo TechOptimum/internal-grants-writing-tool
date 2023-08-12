@@ -26,9 +26,12 @@ const CreateGrant = () => {
 
 
   const size = '3xl';
-
-
-  const createGrant = api.grants.create.useMutation();
+  const {refetch: refetchGrants} = api.grants.getGrants.useQuery()
+  const createGrant = api.grants.creats.useMutation({
+    onSucess: () => {
+      void refetchGrants()
+    }
+  });
 
   const resetForm = () => {
     setTitle('');
