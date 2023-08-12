@@ -16,7 +16,7 @@ import { AiFillFileText } from 'react-icons/ai';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import Head from 'next/head';
 import { api } from '~/utils/api';
-
+import {refetchGrants} from './utils/refetch'
 
 const CreateGrant = () => {
   const [title, setTitle] = useState('');
@@ -25,8 +25,7 @@ const CreateGrant = () => {
   const [criteria, setCriteria] = useState('');
 
 
-  const size = '3xl';
-  const {refetch: refetchGrants} = api.grants.getGrants.useQuery()
+  const size = '3xl'
   const createGrant = api.grants.creats.useMutation({
     onSucess: () => {
       void refetchGrants()
