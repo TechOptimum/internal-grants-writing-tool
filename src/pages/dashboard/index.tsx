@@ -49,6 +49,11 @@ export default function Page() {
             description="Yep..."
             footer="Available until November 11th, 2023"
           />
+          <Grant
+            title="Grant"
+            description="Yep..."
+            footer="Available until November 11th, 2023"
+          />
         </Wrap>
       </VStack>
     </>
