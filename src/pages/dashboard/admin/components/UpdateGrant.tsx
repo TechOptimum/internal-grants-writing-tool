@@ -39,7 +39,7 @@ const CreateGrant = ({ grant_id, initialAmount, initialCriteria, initialDescript
 
 
   const updateGrant = api.grants.updateGrant.useMutation({
-    onSucess: () => {
+    onSuccess: () => {
       void refetchGrants()
     }
   });
