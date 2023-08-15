@@ -1,18 +1,23 @@
 import React from 'react';
 import {
+  Box,
+  Button,
   Card,
   CardHeader,
   CardFooter,
-  Box,
-  Stack,
   IconButton,
   Modal,
   ModalBody,
   ModalCloseButton,
-  ModalOverlay,
   ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  Text,
   useDisclosure,
 } from '@chakra-ui/react';
+import Head from 'next/head';
 import { RepeatIcon, DeleteIcon } from '@chakra-ui/icons';
 import UpdateGrant from './UpdateGrant';
 
@@ -33,11 +38,21 @@ const Grant: React.FC<GrantProps> = ({
   criteria,
   description,
 }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenUpdateModal,
+    onOpen: onOpenUpdateModal,
+    onClose: onCloseUpdateModal,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenDeleteModal,
+    onOpen: onOpenDeleteModal,
+    onClose: onCloseDeleteModal,
+  } = useDisclosure();
 
   const deleteGrant = async () => {
     try {
       onDelete();
+      onCloseDeleteModal();
     } catch {
       console.error('There was an error performing this function');
     }
@@ -51,25 +66,28 @@ const Grant: React.FC<GrantProps> = ({
             {title}
           </CardHeader>
           <CardFooter color="blackAlpha.700" fontWeight="medium">
-            The amount paid is, ${amount}
+            <Stack spacing={1}>
+              <Text>Amount: {amount}</Text>
+              <Text>Grant ID: {grant_id}</Text>
+            </Stack>
           </CardFooter>
-          <Stack direction="row">
+          <Stack direction="row" spacing={2} mt={2}>
             <IconButton
               aria-label="Delete"
               icon={<DeleteIcon />}
-              onClick={deleteGrant}
+              onClick={onOpenDeleteModal}
             />
             <IconButton
               aria-label="Update"
               icon={<RepeatIcon />}
-              onClick={onOpen}
+              onClick={onOpenUpdateModal}
             />
           </Stack>
         </Box>
       </Card>
       <Modal
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isOpenUpdateModal}
+        onClose={onCloseUpdateModal}
         isCentered
         closeOnOverlayClick={false}
       >
@@ -85,6 +103,25 @@ const Grant: React.FC<GrantProps> = ({
               initialDescription={description}
             />
           </ModalBody>
+        </ModalContent>
+      </Modal>
+      <Modal onClose={onCloseDeleteModal} isOpen={isOpenDeleteModal} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <Head>
+            <title>Confirm to delete grant</title>
+          </Head>
+          <ModalHeader>Confirmation for deletion</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>Are you sure you want to delete this grant?</ModalBody>
+          <ModalFooter>
+            <Button onClick={deleteGrant} marginRight={2} colorScheme="blue">
+              Yes
+            </Button>
+            <Button onClick={onCloseDeleteModal} colorScheme="red">
+              No
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

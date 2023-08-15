@@ -30,8 +30,6 @@ const CreateGrant = ({ grant_id, initialAmount, initialCriteria, initialDescript
   const [description, setDescription] = useState(initialDescription);
   const [amount, setAmount] = useState(initialAmount);
   const [criteria, setCriteria] = useState(initialCriteria);
-  const [sucessAlert, setsucessAlert] = useState(false);
-  const [errorAlert, seterrorAlert] = useState(false);
 
   const { refetch } = api.grants.getGrants.useQuery();
 
@@ -54,7 +52,6 @@ const CreateGrant = ({ grant_id, initialAmount, initialCriteria, initialDescript
   const handleUpdateClick = async (id: string) => {
     try {
       if (!title || !amount || !description || !criteria) {
-        seterrorAlert(true);
         return;
       }
 
@@ -66,11 +63,10 @@ const CreateGrant = ({ grant_id, initialAmount, initialCriteria, initialDescript
         id
       });
 
-      resetForm();
-      setsucessAlert(true);
+      alert('Updated your grant!')
+
     } catch (error) {
       console.error('Error creating grant:', error);
-      seterrorAlert(true);
     }
   };
 
@@ -79,7 +75,7 @@ const CreateGrant = ({ grant_id, initialAmount, initialCriteria, initialDescript
       <Head>
         <title>Grant Update | TechOptimum Grants Writing Tool</title>
       </Head>
-        <Flex align="center" marginBottom="1rem" marginTop={(sucessAlert || errorAlert) ? '20px' : '10px' } >
+        <Flex align="center" marginBottom="1rem" marginTop={'10px'} >
           <Text fontSize={size} fontWeight="bold">
             Update your Grant
           </Text>

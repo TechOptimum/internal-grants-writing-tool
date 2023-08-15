@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Box,
   Button,
   FormControl,
   FormLabel,
@@ -13,7 +12,6 @@ import {
   Divider,
 } from '@chakra-ui/react';
 import { AiFillFileText } from 'react-icons/ai';
-import { ChevronLeftIcon } from '@chakra-ui/icons';
 import Head from 'next/head';
 import { api } from '~/utils/api';
 
@@ -25,8 +23,8 @@ const CreateGrant = () => {
 
   const { refetch } = api.grants.getGrants.useQuery();
 
-
   const size = '3xl'
+
   const createGrant = api.grants.create.useMutation({
     onSuccess: () => {
       void refetch()
@@ -53,9 +51,8 @@ const CreateGrant = () => {
         criteria,
       });
 
-      
-
       resetForm();
+      alert('Created your grant!')
     } catch (error) {
       console.error('Error creating grant:', error);
     }
