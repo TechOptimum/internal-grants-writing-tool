@@ -29,7 +29,7 @@ interface NavBarProps {
 }
 
 export default function NavBar({ isOpen, onToggle }: NavBarProps) {
-  const [isSmallerThan500] = useMediaQuery('(min-width: 501px)'); // Adjusted media query condition
+  const [isSmallerThan500] = useMediaQuery("(min-width: 501px)"); // Adjusted media query condition
 
   return (
     <HStack
@@ -42,7 +42,9 @@ export default function NavBar({ isOpen, onToggle }: NavBarProps) {
       borderColor="gray.500"
     >
       <Tooltip
-        label={!isOpen ? "Open full navigation menu" : "Close full navigation menu"}
+        label={
+          !isOpen ? "Open full navigation menu" : "Close full navigation menu"
+        }
         placement="right"
         bg="gray.800"
         borderRadius="8px"
@@ -58,7 +60,7 @@ export default function NavBar({ isOpen, onToggle }: NavBarProps) {
           onClick={onToggle}
         />
       </Tooltip>
-      
+
       {isSmallerThan500 ? (
         <>
           <HStack>
@@ -72,27 +74,26 @@ export default function NavBar({ isOpen, onToggle }: NavBarProps) {
           </HStack>
         </>
       ) : (
-<Flex alignItems="center"> 
-  <UserButton />
-  <Menu>
-    <MenuButton
-      as={IconButton}
-      aria-label="Options"
-      icon={<HamburgerIcon />}
-      variant="outline"
-      marginLeft= '10px'
-    />
-    <MenuList>
-      <MenuItem icon={<ViewIcon />} marginTop="0.5rem">
-        Dashboard
-      </MenuItem>
-      <MenuItem icon={<EditIcon />}>Writing</MenuItem>
-      <MenuItem icon={<AttachmentIcon />}>Upload</MenuItem>
-      <MenuItem icon={<TimeIcon />}>History</MenuItem>
-    </MenuList>
-  </Menu>
-</Flex>
-
+        <Flex alignItems="center">
+          <UserButton />
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={<HamburgerIcon />}
+              variant="outline"
+              marginLeft="10px"
+            />
+            <MenuList>
+              <MenuItem icon={<ViewIcon />} marginTop="0.5rem">
+                Dashboard
+              </MenuItem>
+              <MenuItem icon={<EditIcon />}>Writing</MenuItem>
+              <MenuItem icon={<AttachmentIcon />}>Upload</MenuItem>
+              <MenuItem icon={<TimeIcon />}>History</MenuItem>
+            </MenuList>
+          </Menu>
+        </Flex>
       )}
     </HStack>
   );

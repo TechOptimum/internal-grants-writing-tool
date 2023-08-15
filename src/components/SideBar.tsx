@@ -84,60 +84,60 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
         borderColor="gray.500"
         align="end"
         h="100%"
+        flexShrink="1"
+        justify="space-between"
       >
-        <VStack h="100%" justifyContent="space-between">
-          <VStack
-            h="100%"
-            w="auto"
-            py="1rem"
-            px={isOpen && !isSmallerThan500 ? "2rem" : "0"}
-            transition="all"
-            transitionDuration="0.5s"
-            justify="space-between"
-          >
-            <VStack w="100%">
-              <SideBtn
-                href="/"
-                icon={AiOutlineHome}
-                isOpen={isOpen}
-                isSmallerThan500={isSmallerThan500}
-              >
-                Home
-              </SideBtn>
-              <SideBtn
-                href="/"
-                icon={BsFileEarmarkText}
-                isOpen={isOpen}
-                isSmallerThan500={isSmallerThan500}
-              >
-                Grants
-              </SideBtn>
-              <SideBtn
-                href="/"
-                icon={BsChatLeftText}
-                isOpen={isOpen}
-                isSmallerThan500={isSmallerThan500}
-              >
-                Feedback
-              </SideBtn>
-              <SideBtn
-                href="/"
-                icon={FiSettings}
-                isOpen={isOpen}
-                isSmallerThan500={isSmallerThan500}
-              >
-                Settings
-              </SideBtn>
-            </VStack>
+        <VStack
+          h="100%"
+          w="auto"
+          py="1rem"
+          px={isOpen && !isSmallerThan500 ? "2rem" : "0"}
+          transition="all"
+          transitionDuration="0.5s"
+          justify="space-between"
+        >
+          <VStack w="100%">
             <SideBtn
               href="/"
-              icon={BsPersonGear}
+              icon={AiOutlineHome}
               isOpen={isOpen}
               isSmallerThan500={isSmallerThan500}
             >
-              User Settings
+              Home
+            </SideBtn>
+            <SideBtn
+              href="/"
+              icon={BsFileEarmarkText}
+              isOpen={isOpen}
+              isSmallerThan500={isSmallerThan500}
+            >
+              Grants
+            </SideBtn>
+            <SideBtn
+              href="/"
+              icon={BsChatLeftText}
+              isOpen={isOpen}
+              isSmallerThan500={isSmallerThan500}
+            >
+              Feedback
+            </SideBtn>
+            <SideBtn
+              href="/"
+              icon={FiSettings}
+              isOpen={isOpen}
+              isSmallerThan500={isSmallerThan500}
+            >
+              Settings
             </SideBtn>
           </VStack>
+          <SideBtn
+            href="/"
+            icon={BsPersonGear}
+            isOpen={isOpen}
+            isSmallerThan500={isSmallerThan500}
+          >
+            User Settings
+          </SideBtn>
         </VStack>
       </VStack>
     </>

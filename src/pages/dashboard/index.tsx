@@ -27,35 +27,30 @@ export default function Page() {
     <>
       <Head>
         <title>Dashboard | TechOptimum Grants Writing Tool</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <VStack w="100%" align="start">
-        <Text fontSize="5xl" fontWeight="bold" mb="0.3rem">
-          Latest Grants
-        </Text>
-        <Wrap w="100%">
-          <Grant
-            title="Grant Opportunity For Project"
-            description="Grant Opportunity For Specific Project :)"
-            footer="Available until October 13th, 2023"
-          />
-          <Grant
-            title="Grant Opportunity For Other Project"
-            description="Grant Opportunity For Not So Specific Project :("
-            footer="Available until August 29th, 2023"
-          />
-          <Grant
-            title="Grant Opportunity For Certain Projects"
-            description="Yep..."
-            footer="Available until November 11th, 2023"
-          />
-          <Grant
-            title="Grant"
-            description="Yep..."
-            footer="Available until November 11th, 2023"
-          />
-        </Wrap>
-      </VStack>
+      <Text fontSize="5xl" fontWeight="bold" mb="0.3rem">
+        Latest Grants
+      </Text>
+      <Grant
+        title="Grant Opportunity For Project"
+        description="Grant Opportunity For Specific Project :)"
+        footer="Available until October 13th, 2023"
+      />
+      <Grant
+        title="Grant Opportunity For Other Project"
+        description="Grant Opportunity For Not So Specific Project :("
+        footer="Available until August 29th, 2023"
+      />
+      <Grant
+        title="Grant Opportunity For Certain Projects"
+        description="Yep..."
+        footer="Available until November 11th, 2023"
+      />
+      <Grant
+        title="Grant"
+        description="Yep..."
+        footer="Available until November 11th, 2023"
+      />
     </>
   );
 }
