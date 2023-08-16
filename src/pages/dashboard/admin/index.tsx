@@ -16,7 +16,6 @@ const Admin = () => {
       void refetchGrants()
     }
   });
-  
 
   const handleDeleteClick = async (id: string) => {
     try {
@@ -53,11 +52,12 @@ const Admin = () => {
           </Button>
         </Flex>
         <VStack w="100%" align="start">
-          <Wrap w="100%" justify="center"> {/* Set justify prop to center */}
-            {grants ? (
-              <>
-                {grants.map((grant) => (
+          <Wrap w="100%" justify="center">
+            {grants !== undefined ? (
+              grants.length > 0 ? (
+                grants.map((grant) => (
                   <GrantPost
+                    key={grant.id}
                     title={grant.title}
                     amount={grant.amount}
                     criteria={grant.criteria}
@@ -65,10 +65,20 @@ const Admin = () => {
                     onDelete={() => void handleDeleteClick(grant.id)}
                     grant_id={grant.id}
                   />
-                ))}
-              </>
+                ))
+              ) : (
+                <VStack>
+                  <Text fontSize='3xl'>
+                    No grants created yet...
+                  </Text>
+                  <Text color='grey'>
+                    Do you want to create one? Make it with the + button 
+                  </Text>
+                </VStack>
+
+              )
             ) : (
-              <p>Loading grants...</p>
+              <Text>Loading grants...</Text>
             )}
           </Wrap>
         </VStack>
@@ -84,8 +94,6 @@ const Admin = () => {
       </Modal>
     </>
   );
-
-  
 };
 
 export default Admin;
