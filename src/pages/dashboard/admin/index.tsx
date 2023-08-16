@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import React, { useState } from 'react';
 import { api } from '~/utils/api';
-import { Button, Text, Modal, ModalBody, ModalOverlay, ModalContent, ModalCloseButton, useDisclosure, VStack, Wrap, Card, HStack, Stack, CardHeader, CardFooter, Box, ModalHeader, ModalFooter,   } from '@chakra-ui/react';
-import { ArrowRightIcon } from '@chakra-ui/icons';
+import { Button, Text, Modal, ModalBody, ModalOverlay, ModalContent, ModalCloseButton, useDisclosure, VStack, Wrap, Flex  } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 import CreateGrant from '~/components/CreateGrant';
 import GrantPost from '~/components/GrantPost';
 
@@ -35,9 +35,23 @@ const Admin = () => {
       <Head>
         <title>Admin Dashboard | TechOptimum Grants Writing Tool</title>
       </Head>
-      <div>
-        <Button onClick={onOpen}>Create a grant</Button>
-
+      <>
+        <Text fontSize="4xl" fontWeight="bold">
+          Admin Portal
+        </Text>
+        <Text fontSize='lg' color={'grey'}>
+          To create a new grant, press the + button at the bottom of your screen.
+        </Text>
+        <Flex 
+          justify="flex-end" 
+          position="fixed" 
+          bottom="20px" 
+          right="20px"
+        >
+          <Button onClick={onOpen} size={'lg'}>
+            <AddIcon />
+          </Button>
+        </Flex>
         <VStack w="100%" align="start">
           <Wrap w="100%" justify="center"> {/* Set justify prop to center */}
             {grants ? (
@@ -58,7 +72,7 @@ const Admin = () => {
             )}
           </Wrap>
         </VStack>
-      </div>
+      </>
       <Modal isOpen={isOpen} onClose={onClose} isCentered closeOnOverlayClick={false}>
         <ModalOverlay />
         <ModalContent>

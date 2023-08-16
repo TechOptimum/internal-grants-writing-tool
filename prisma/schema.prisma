@@ -19,7 +19,7 @@ model Example {
 model Grant {
     id String @id @default(auto()) @map("_id") @db.ObjectId
     title String
-    description String
     amount Int
+    description String
     criteria String
 }

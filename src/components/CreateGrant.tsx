@@ -52,10 +52,9 @@ const CreateGrant = () => {
         description,
         criteria,
       });
-
       
-
       resetForm();
+      alert('Created grant')
     } catch (error) {
       console.error('Error creating grant:', error);
     }
