@@ -3,65 +3,68 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const grantsRouter = createTRPCRouter({
-    create: protectedProcedure
-      .input(
-        z.object({
-          title: z.string(),
-          amount: z.number(),
-          description: z.string(),
-          criteria: z.string(),
-        })
-      )
-      .mutation(({ ctx, input }) => {
-        return ctx.prisma.grant.create({
-          data: {
-            title: input.title,
-            amount: input.amount,
-            description: input.description,
-            criteria: input.criteria,
-          },
-        });
-      }),
-      
-      getGrants: protectedProcedure
-      .query(({ ctx }) => {
-        return ctx.prisma.grant.findMany();
-      }),
+  create: protectedProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        amount: z.number(),
+        description: z.string(),
+        criteria: z.string(),
+        endDate: z.date(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.grant.create({
+        data: {
+          title: input.title,
+          amount: input.amount,
+          description: input.description,
+          criteria: input.criteria,
+          endDate: input.endDate,
+          available: true,
+        },
+      });
+    }),
 
-      deleteGrant: protectedProcedure
-      .input(z.object({ id: z.string() }))
-      .mutation(async ({ ctx, input }) => {
-        return ctx.prisma.grant.delete({
-          where: {
-            id: input.id,
-          },
-        });
-      }),
+  getGrants: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.grant.findMany();
+  }),
 
-      updateGrant: protectedProcedure
-      .input(
-        z.object({
-          id: z.string(),
-          title: z.string(),
-          amount: z.number(),
-          description: z.string(),
-          criteria: z.string(),
-        })
-      )
-      .mutation(({ ctx, input }) => {
-        return ctx.prisma.grant.update({
-          where: {
-            id: input.id,
-          },
-          data: {
-            title: input.title,
-            amount: input.amount,
-            description: input.description,
-            criteria: input.criteria,
-          },
-        });
-      }),
-      
-    
-  });
-  
+  deleteGrant: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.grant.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
+
+  updateGrant: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        amount: z.number(),
+        description: z.string(),
+        criteria: z.string(),
+        endDate: z.date(),
+        available: z.boolean(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.grant.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          title: input.title,
+          amount: input.amount,
+          description: input.description,
+          criteria: input.criteria,
+          endDate: input.endDate,
+          available: input.available,
+        },
+      });
+    }),
+});
