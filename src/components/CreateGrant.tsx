@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useRef } from "react";
 import {
-  Box,
   Button,
   FormControl,
   FormLabel,
@@ -11,118 +10,135 @@ import {
   Text,
   Flex,
   Divider,
-} from '@chakra-ui/react';
-import { AiFillFileText } from 'react-icons/ai';
-import { ChevronLeftIcon } from '@chakra-ui/icons';
-import Head from 'next/head';
-import { api } from '~/utils/api';
+  useToast,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from "@chakra-ui/react";
+import { AiFillFileText } from "react-icons/ai";
+import Head from "next/head";
+import { api } from "~/utils/api";
 
 const CreateGrant = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [amount, setAmount] = useState('');
-  const [criteria, setCriteria] = useState('');
+  const titleRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const endDateRef = useRef<HTMLInputElement>(null);
+  const amountRef = useRef<HTMLInputElement>(null);
+  const criteriaRef = useRef<HTMLTextAreaElement>(null);
+
+  const toast = useToast();
 
   const { refetch } = api.grants.getGrants.useQuery();
 
-
-  const size = '3xl'
   const createGrant = api.grants.create.useMutation({
     onSuccess: () => {
-      void refetch()
-    }
+      void refetch();
+    },
   });
 
   const resetForm = () => {
-    setTitle('');
-    setDescription('');
-    setAmount('');
-    setCriteria('');
+    const refs = [titleRef, descriptionRef, endDateRef, amountRef, criteriaRef];
+    refs.forEach((ref) => (ref.current ? (ref.current.value = "") : ""));
   };
 
-  const handleSaveClick = async () => {
+  const handleSaveClick = () => {
     try {
-      if (!title || !amount || !description || !criteria) {
-        return;
+      const refs = [
+        titleRef,
+        descriptionRef,
+        endDateRef,
+        amountRef,
+        criteriaRef,
+      ];
+
+      for (const i of refs) {
+        if (i.current) {
+          if (i.current.value === "") {
+            return;
+          }
+        } else {
+          return;
+        }
       }
 
-      await createGrant.mutateAsync({
+      const title = titleRef.current ? titleRef.current.value : "";
+      const amount = amountRef.current ? amountRef.current.value : "";
+      const description = descriptionRef.current
+        ? descriptionRef.current.value
+        : "";
+      const criteria = criteriaRef.current ? criteriaRef.current.value : "";
+      const endDate = endDateRef.current
+        ? new Date(endDateRef.current.value)
+        : new Date();
+
+      createGrant.mutate({
         title,
         amount: parseFloat(amount),
         description,
         criteria,
+        endDate,
       });
-
-      
 
       resetForm();
     } catch (error) {
-      console.error('Error creating grant:', error);
+      console.error("Error creating grant:", error);
+      toast({
+        title: "Error creating grant",
+        description: "Check the logs for more information",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
   return (
     <>
-      <Head>
-        <title>Grant Creation | TechOptimum Grants Writing Tool</title>
-      </Head>
-        <Flex align="center" marginBottom="1rem">
-          <Text fontSize={size} fontWeight="bold">
-            Create a Grant
-          </Text>
-        </Flex>
-        <Text marginBottom={4} color="gray">
-          Welcome to Tech Optimum's Grant Creation Tool. Fill out the form below to create a grant opportunity.
-        </Text>
-        <FormControl isRequired>
-          <FormLabel>Title</FormLabel>
-          <InputGroup>
-            <InputLeftAddon children={<AiFillFileText />} />
-            <Input
-              type="text"
-              placeholder="Enter the title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </InputGroup>
-        </FormControl>
-        <FormControl marginTop={4} isRequired>
-          <FormLabel>Amount</FormLabel>
-          <InputGroup>
-            <InputLeftAddon children='$' />
-            <Input
-              type="number"
-              placeholder="Enter the amount"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-            />
-          </InputGroup>
-        </FormControl>
-        <FormControl marginTop={4} isRequired>
-          <FormLabel>Description</FormLabel>
-          <Textarea
-            placeholder="Enter the description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </FormControl>
-        <FormControl marginTop={4} isRequired>
-          <FormLabel>Criteria</FormLabel>
-          <Textarea
-            placeholder="Enter the grant's criteria"
-            value={criteria}
-            onChange={(e) => setCriteria(e.target.value)}
-          />
-        </FormControl>
-        <Divider my={6} />
-        <Flex justifyContent="flex-end" marginTop={8}>
-          <Button colorScheme="gray" marginRight={4} onClick={resetForm}>
-            Reset
-          </Button>
-          <Button colorScheme="blue" onClick={handleSaveClick}>
-            Save
-          </Button>
-        </Flex>
+      <FormControl isRequired>
+        <FormLabel>Title</FormLabel>
+        <InputGroup>
+          <InputLeftAddon>
+            <AiFillFileText />
+          </InputLeftAddon>
+          <Input type="text" ref={titleRef} placeholder="Enter the title" />
+        </InputGroup>
+      </FormControl>
+      <FormControl marginTop={4} isRequired>
+        <FormLabel>Amount</FormLabel>
+        <InputGroup>
+          <InputLeftAddon>$</InputLeftAddon>
+          <NumberInput min={1} w="100%">
+            <NumberInputField ref={amountRef} />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </InputGroup>
+      </FormControl>
+      <FormControl marginTop={4} isRequired>
+        <FormLabel>Description</FormLabel>
+        <Textarea ref={descriptionRef} placeholder="Enter the description" />
+      </FormControl>
+      <FormControl marginTop={4} isRequired>
+        <FormLabel>End Date</FormLabel>
+        <Input type="date" ref={endDateRef} />
+      </FormControl>
+      <FormControl marginTop={4} isRequired>
+        <FormLabel>Criteria</FormLabel>
+        <Textarea ref={criteriaRef} placeholder="Enter the grant's criteria" />
+      </FormControl>
+      <Divider my={6} />
+      <Flex justifyContent="flex-end" marginTop={8}>
+        <Button colorScheme="gray" marginRight={4} onClick={resetForm}>
+          Reset
+        </Button>
+        <Button colorScheme="blue" onClick={handleSaveClick}>
+          Save
+        </Button>
+      </Flex>
     </>
   );
 };

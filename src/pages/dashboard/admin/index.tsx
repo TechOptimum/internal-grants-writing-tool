@@ -1,5 +1,4 @@
 import Head from "next/head";
-import React, { useState } from "react";
 import { api } from "~/utils/api";
 import {
   Button,
@@ -12,16 +11,11 @@ import {
   useDisclosure,
   VStack,
   Wrap,
-  Card,
   HStack,
-  Stack,
-  CardHeader,
-  CardFooter,
   Box,
   ModalHeader,
-  ModalFooter,
+  Flex,
 } from "@chakra-ui/react";
-import { ArrowRightIcon } from "@chakra-ui/icons";
 import CreateGrant from "~/components/CreateGrant";
 import GrantPost from "~/components/GrantPost";
 
@@ -54,8 +48,13 @@ const Admin = () => {
       <Head>
         <title>Admin Dashboard | TechOptimum Grants Writing Tool</title>
       </Head>
-      <div>
-        <Button onClick={onOpen}>Create a grant</Button>
+      <Box w="100%">
+        <HStack w="100%" justify="space-between">
+          <Text fontSize="4xl" fontWeight="bold">
+            Manage Grants
+          </Text>
+          <Button onClick={onOpen}>Create a grant</Button>
+        </HStack>
 
         <VStack w="100%" align="start">
           <Wrap w="100%" justify="center">
@@ -80,16 +79,27 @@ const Admin = () => {
             )}
           </Wrap>
         </VStack>
-      </div>
+      </Box>
       <Modal
         isOpen={isOpen}
         onClose={onClose}
         isCentered
         closeOnOverlayClick={false}
+        size="2xl"
+        scrollBehavior="inside"
       >
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
+          <ModalHeader>
+            <Text fontSize="3xl" fontWeight="bold">
+              Create a Grant
+            </Text>
+            <Text marginBottom={4} color="gray" fontWeight="medium">
+              Welcome to Tech Optimum&apos;s Grant Creation Tool. Fill out the
+              form below to create a grant opportunity.
+            </Text>
+          </ModalHeader>
           <ModalBody pb={6}>
             <CreateGrant />
           </ModalBody>
