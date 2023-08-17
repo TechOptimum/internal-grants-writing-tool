@@ -7,7 +7,6 @@ import {
   InputGroup,
   InputLeftAddon,
   Textarea,
-  Text,
   Flex,
   Divider,
   useToast,
@@ -18,7 +17,6 @@ import {
   NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { AiFillFileText } from "react-icons/ai";
-import Head from "next/head";
 import { api } from "~/utils/api";
 
 const CreateGrant = () => {
@@ -80,9 +78,9 @@ const CreateGrant = () => {
         criteria,
         endDate,
       });
-      
+
       resetForm();
-      
+
       toast({
         title: "Created grant successfully",
         status: "success",
