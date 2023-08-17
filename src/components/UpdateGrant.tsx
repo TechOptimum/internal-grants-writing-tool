@@ -64,7 +64,7 @@ const CreateGrant = ({
 
   const removeAvailability = () => {
     toast({
-      title: "Setted your changes to the availablity to false",
+      title: "Set availability to false",
       status: "info",
       duration: 5000,
       isClosable: true,
@@ -74,7 +74,7 @@ const CreateGrant = ({
 
   const addAvailability = () => {
     toast({
-      title: "Setted your changes to the availablity to true",
+      title: "Set availability to true",
       status: "info",
       duration: 5000,
       isClosable: true,
@@ -87,7 +87,7 @@ const CreateGrant = ({
 
         if(!title || description || endDate || amount || criteria) {
           toast({
-            title: "There are field(s) that are missing text, please fill them out ",
+            title: "Some field(s) are missing, please fill them out.",
             status: "error",
             duration: 5000,
             isClosable: true,
@@ -113,6 +113,13 @@ const CreateGrant = ({
       });
     } catch (error) {
       console.error('Error creating grant:', error);
+      toast({
+        title: "Something went wrong.",
+        description: "Check the logs for more information.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
