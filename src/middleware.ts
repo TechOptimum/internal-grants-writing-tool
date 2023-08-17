@@ -3,5 +3,10 @@ import { authMiddleware } from "@clerk/nextjs";
 export default authMiddleware({});
 
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/dashboard", "/(api|trpc)(.*)"],
+  matcher: [
+    "/((?!.*\\..*|_next).*)",
+    "/dashboard",
+    "/uploadthing",
+    "/(api|trpc)(.*)",
+  ],
 };
