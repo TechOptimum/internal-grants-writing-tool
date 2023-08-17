@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import CreateGrant from "~/components/CreateGrant";
-import GrantPost from "~/components/GrantPost";
+import GrantPost from "~/components/GrantPostAdmin";
 import { api } from "~/utils/api";
 
 const Admin = () => {
@@ -73,6 +73,8 @@ const Admin = () => {
                     description={grant.description}
                     onDelete={() => void handleDeleteClick(grant.id)}
                     grant_id={grant.id}
+                    endDate={grant.endDate}
+                    available={grant.available}
                   />
                 ))
               ) : (

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
-  Box,
+  Switch,
   Button,
   FormControl,
   FormLabel,
@@ -11,8 +11,10 @@ import {
   Text,
   Flex,
   Divider,
+  useToast
 } from '@chakra-ui/react';
 import { AiFillFileText } from 'react-icons/ai';
+import {CloseIcon, CheckIcon} from '@chakra-ui/icons'
 import Head from 'next/head';
 import { api } from '~/utils/api';
 
@@ -22,49 +24,106 @@ interface CreateGrantProps {
   initialAmount: number;
   initialDescription: string;
   initialCriteria: string;
+  initialEndDate: Date;
+  initialAvailability: boolean;
 }
 
-const CreateGrant = ({ grant_id, initialAmount, initialCriteria, initialDescription, initialTitle }: CreateGrantProps) => {
-  const [title, setTitle] = useState(initialTitle);
-  const [description, setDescription] = useState(initialDescription);
-  const [amount, setAmount] = useState(initialAmount);
-  const [criteria, setCriteria] = useState(initialCriteria);
+const UpdateGrant = ({
+  grant_id,
+  initialAmount,
+  initialCriteria,
+  initialDescription,
+  initialTitle,
+  initialEndDate,
+  initialAvailability,
+}: CreateGrantProps) => {
+  const titleRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const amountRef = useRef<HTMLInputElement>(null);
+  const criteriaRef = useRef<HTMLTextAreaElement>(null);
+  const endDateRef = useRef<HTMLInputElement>(null);
+  const availableRef = useRef<HTMLInputElement>(null);
+
+  const toast = useToast();
 
   const { refetch } = api.grants.getGrants.useQuery();
 
   const size = '3xl';
 
-
   const updateGrant = api.grants.updateGrant.useMutation({
     onSuccess: () => {
-      void refetch()
-    }
+      void refetch();
+    },
   });
 
   const resetForm = () => {
-    setTitle(initialTitle);
-    setDescription(initialDescription);
-    setAmount(initialAmount);
-    setCriteria(initialCriteria);
+    const refs = [titleRef, descriptionRef, amountRef, criteriaRef, endDateRef, availableRef];
+    if (refs.every(ref => ref.current)) {
+      if (titleRef.current) titleRef.current.value = initialTitle;
+      if (descriptionRef.current) descriptionRef.current.value = initialDescription;
+      if (amountRef.current) amountRef.current.value = initialAmount.toString();
+      if (criteriaRef.current) criteriaRef.current.value = initialCriteria;
+      if (endDateRef.current) endDateRef.current.value = initialEndDate.toDateString();
+      if (availableRef.current) availableRef.current.checked = initialAvailability;
+    }
   };
 
   const handleUpdateClick = async (id: string) => {
     try {
-      if (!title || !amount || !description || !criteria) {
-        return;
+      const refs = [
+        titleRef,
+        descriptionRef,
+        endDateRef,
+        amountRef,
+        criteriaRef,
+      ];
+
+      for (const i of refs) {
+        if (i.current) {
+          if (i.current.value === "") {
+            return;
+          }
+        } else {
+          return;
+        }
       }
 
-      await updateGrant.mutateAsync({
+      const title = titleRef.current ? titleRef.current.value : "";
+      const amount = amountRef.current ? Number(amountRef.current.value) : Number(0);
+      const description = descriptionRef.current
+        ? descriptionRef.current.value
+        : "";
+      const criteria = criteriaRef.current ? criteriaRef.current.value : "";
+      const endDate = endDateRef.current
+        ? new Date(endDateRef.current.value)
+        : new Date();
+      const available = availableRef.current ? availableRef.current.checked : true;
+
+      await updateGrant.mutate({
         title,
         amount,
         description,
         criteria,
-        id
+        id,
+        endDate,
+        available,
       });
 
-      alert('Updated grant')
+      toast({
+        title: "Updated grant successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } catch (error) {
-      console.error('Error creating grant:', error);
+      console.error('Error updating grant:', error);
+      toast({
+        title: "Something went wrong.",
+        description: "Check the logs for more information.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -73,65 +132,77 @@ const CreateGrant = ({ grant_id, initialAmount, initialCriteria, initialDescript
       <Head>
         <title>Grant Update | TechOptimum Grants Writing Tool</title>
       </Head>
-        <Flex align="center" marginBottom="1rem">
-          <Text fontSize={size} fontWeight="bold">
-            Update your Grant
-          </Text>
-        </Flex>
-        <Text marginBottom={4} color="gray">
-          Update your grant as you wish!
+      <Flex align="center" marginBottom="1rem">
+        <Text fontSize={size} fontWeight="bold">
+          Update a Grant
         </Text>
-        <FormControl isRequired>
-          <FormLabel>Title</FormLabel>
-          <InputGroup>
-            <InputLeftAddon children={<AiFillFileText />} />
-            <Input
-              type="text"
-              placeholder="Update the title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </InputGroup>
-        </FormControl>
-        <FormControl marginTop={4} isRequired>
-          <FormLabel>Amount</FormLabel>
-          <InputGroup>
-            <InputLeftAddon children='$' />
-            <Input
-              type="number"
-              placeholder="Update the amount"
-              value={amount}
-              onChange={(e) => setAmount(parseFloat(e.target.value))}
-            />
-          </InputGroup>
-        </FormControl>
-        <FormControl marginTop={4} isRequired>
-          <FormLabel>Description</FormLabel>
-          <Textarea
-            placeholder="Update the description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+      </Flex>
+      <Text marginBottom={4} color="gray">
+        Update the grant as you wish!
+      </Text>
+      <FormControl isRequired>
+        <FormLabel>Title</FormLabel>
+        <InputGroup>
+          <InputLeftAddon children={<AiFillFileText />} />
+          <Input
+            type="text"
+            placeholder="Update the title"
+            value={initialTitle}
+            ref={titleRef}
           />
-        </FormControl>
-        <FormControl marginTop={4} isRequired>
-          <FormLabel>Criteria</FormLabel>
-          <Textarea
-            placeholder="Update the grant's criteria"
-            value={criteria}
-            onChange={(e) => setCriteria(e.target.value)}
+        </InputGroup>
+      </FormControl>
+      <FormControl marginTop={4} isRequired>
+        <FormLabel>Amount</FormLabel>
+        <InputGroup>
+          <InputLeftAddon children="$" />
+          <Input
+            type="number"
+            placeholder="Update the amount"
+            value={initialAmount}
+            ref={amountRef}
           />
-        </FormControl>
-        <Divider my={6} />
-        <Flex justifyContent="flex-end" marginTop={8}>
-          <Button colorScheme="gray" marginRight={4} onClick={resetForm}>
-            Reset
-          </Button>
-          <Button colorScheme="blue" onClick={() => {handleUpdateClick(grant_id)}}>
-            Save
-          </Button>
-        </Flex>
+        </InputGroup>
+      </FormControl>
+      <FormControl marginTop={4} isRequired>
+        <FormLabel>Description</FormLabel>
+        <Textarea
+          placeholder="Update the description"
+          value={initialDescription}
+          ref={descriptionRef}
+        />
+      </FormControl>
+      <FormControl marginTop={4} isRequired>
+        <FormLabel>Criteria</FormLabel>
+        <Textarea
+          placeholder="Update the grant's criteria"
+          value={initialCriteria}
+          ref={criteriaRef}
+        />
+      </FormControl>
+      <FormControl marginTop={4} isRequired>
+        <FormLabel>End Date</FormLabel>
+        <Input
+          type="date"
+          value={initialEndDate.toLocaleDateString()}
+          ref={endDateRef}
+        />
+      </FormControl>
+      <FormControl marginTop={4} isRequired>
+        <FormLabel>Toggle Availability</FormLabel>
+        <Switch defaultChecked={initialAvailability} />
+      </FormControl>
+      <Divider my={6} />
+      <Flex justifyContent="flex-end" marginTop={8}>
+        <Button colorScheme="gray" marginRight={4} onClick={resetForm}>
+          Reset
+        </Button>
+        <Button colorScheme="blue" onClick={() => handleUpdateClick(grant_id)}>
+          Save
+        </Button>
+      </Flex>
     </>
   );
 };
 
-export default CreateGrant;
+export default UpdateGrant;

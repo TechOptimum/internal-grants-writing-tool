@@ -52,13 +52,15 @@ export default function NavBar({ isOpen, onToggle }: NavBarProps) {
         fontSize="16px"
       >
         <Image
-          w="120px"
+          w="25px" 
+          h="auto"  
           ml="1rem"
           src="/logo.png"
           alt="TechOptimum"
           cursor="pointer"
           onClick={onToggle}
         />
+
       </Tooltip>
 
       {isSmallerThan500 ? (

@@ -27,6 +27,8 @@ interface GrantProps {
   description: string;
   onDelete: () => void;
   grant_id: string;
+  endDate: Date;
+  available: boolean;
 }
 
 const Grant: React.FC<GrantProps> = ({
@@ -36,6 +38,8 @@ const Grant: React.FC<GrantProps> = ({
   grant_id,
   criteria,
   description,
+  endDate,
+  available
 }) => {
   const { isOpen: isOpenUpdateModal, onOpen: onOpenUpdateModal, onClose: onCloseUpdateModal } = useDisclosure();
   const {isOpen: isOpenDeleteModal, onOpen: onOpenDeleteModal, onClose: onCloseDeleteModal} = useDisclosure();
@@ -60,6 +64,8 @@ const Grant: React.FC<GrantProps> = ({
             Amount: {amount}
             <br />
             Grant ID: {grant_id}
+            <br />
+            Availablity: {available ? 'Available':'Not available'}
           </CardFooter>
           <Stack direction="row" justify='flex-end'>
             <IconButton
@@ -91,6 +97,8 @@ const Grant: React.FC<GrantProps> = ({
               initialAmount={amount}
               initialCriteria={criteria}
               initialDescription={description}
+              initialEndDate={endDate}
+              initialAvailability={available}
             />
           </ModalBody>
         </ModalContent>
