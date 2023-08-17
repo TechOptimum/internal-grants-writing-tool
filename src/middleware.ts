@@ -6,7 +6,7 @@ export const config = {
   matcher: [
     "/((?!.*\\..*|_next).*)",
     "/dashboard",
-    "/uploadthing",
+    "/api/uploadthing",
     "/(api|trpc)(.*)",
   ],
 };
