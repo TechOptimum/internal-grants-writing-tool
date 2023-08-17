@@ -51,15 +51,15 @@ export default function NavBar({ isOpen, onToggle }: NavBarProps) {
         p="8px"
         fontSize="16px"
       >
-<Image
-  w="30px"  // Decrease the width
-  h="auto"  // Keep the aspect ratio by setting height to "auto"
-  ml="1rem"
-  src="/logo.png"
-  alt="TechOptimum"
-  cursor="pointer"
-  onClick={onToggle}
-/>
+        <Image
+          w="25px" 
+          h="auto"  
+          ml="1rem"
+          src="/logo.png"
+          alt="TechOptimum"
+          cursor="pointer"
+          onClick={onToggle}
+        />
 
       </Tooltip>
 
