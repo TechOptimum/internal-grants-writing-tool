@@ -1,31 +1,44 @@
-import Head from 'next/head';
-import React, { useState } from 'react';
-import { api } from '~/utils/api';
-import { Button, Text, Modal, ModalBody, ModalOverlay, ModalContent, ModalCloseButton, useDisclosure, VStack, Wrap, Flex  } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
-import CreateGrant from '~/components/CreateGrant';
-import GrantPost from '~/components/GrantPost';
+import Head from "next/head";
+import {
+  Button,
+  Text,
+  Modal,
+  ModalBody,
+  ModalOverlay,
+  ModalContent,
+  ModalCloseButton,
+  useDisclosure,
+  VStack,
+  Wrap,
+  ModalHeader,
+  Flex,
+} from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
+import CreateGrant from "~/components/CreateGrant";
+import GrantPost from "~/components/GrantPost";
+import { api } from "~/utils/api";
 
 const Admin = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data: grants, refetch: refetchGrants } = api.grants.getGrants.useQuery();
+  const { data: grants, refetch: refetchGrants } =
+    api.grants.getGrants.useQuery();
 
   const deleteGrant = api.grants.deleteGrant.useMutation({
     onSuccess: () => {
-      void refetchGrants()
-    }
+      void refetchGrants();
+    },
   });
 
   const handleDeleteClick = async (id: string) => {
     try {
       await deleteGrant.mutateAsync({
         id,
-      }); 
+      });
 
-      alert('Deleted successfully');
+      alert("Deleted successfully");
     } catch (error) {
-      console.error('Error deleting grant:', error);
+      console.error("Error deleting grant:", error);
     }
   };
 
@@ -38,16 +51,12 @@ const Admin = () => {
         <Text fontSize="4xl" fontWeight="bold">
           Admin Portal
         </Text>
-        <Text fontSize='lg' color={'grey'}>
-          To create a new grant, press the + button at the bottom of your screen.
+        <Text fontSize="lg" color={"grey"}>
+          To create a new grant, press the + button at the bottom of your
+          screen.
         </Text>
-        <Flex 
-          justify="flex-end" 
-          position="fixed" 
-          bottom="20px" 
-          right="20px"
-        >
-          <Button onClick={onOpen} size={'lg'}>
+        <Flex justify="flex-end" position="fixed" bottom="20px" right="20px">
+          <Button onClick={onOpen} size={"lg"}>
             <AddIcon />
           </Button>
         </Flex>
@@ -68,14 +77,11 @@ const Admin = () => {
                 ))
               ) : (
                 <VStack>
-                  <Text fontSize='3xl'>
-                    No grants created yet...
-                  </Text>
-                  <Text color='grey'>
-                    Do you want to create one? Make it with the + button 
+                  <Text fontSize="3xl">No grants created yet...</Text>
+                  <Text color="grey">
+                    Do you want to create one? Make it with the + button
                   </Text>
                 </VStack>
-
               )
             ) : (
               <Text>Loading grants...</Text>
@@ -83,10 +89,26 @@ const Admin = () => {
           </Wrap>
         </VStack>
       </>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered closeOnOverlayClick={false}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        isCentered
+        closeOnOverlayClick={false}
+        size="2xl"
+        scrollBehavior="inside"
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
+          <ModalHeader>
+            <Text fontSize="3xl" fontWeight="bold">
+              Create a Grant
+            </Text>
+            <Text marginBottom={4} color="gray" fontWeight="medium">
+              Welcome to Tech Optimum&apos;s Grant Creation Tool. Fill out the
+              form below to create a grant opportunity.
+            </Text>
+          </ModalHeader>
           <ModalBody pb={6}>
             <CreateGrant />
           </ModalBody>

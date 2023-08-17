@@ -2,11 +2,10 @@ import Head from "next/head";
 import {
   Stack,
   Text,
-  VStack,
   Card,
   CardHeader,
+  CardBody,
   CardFooter,
-  Wrap,
   HStack,
   Button,
   Box,
@@ -21,8 +20,11 @@ import {
 } from "@chakra-ui/react";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import { useState } from "react";
+import { api } from "~/utils/api";
 
 export default function Page() {
+  const { data } = api.grants.getGrants.useQuery();
+
   return (
     <>
       <Head>
@@ -31,26 +33,20 @@ export default function Page() {
       <Text fontSize="5xl" fontWeight="bold" mb="0.3rem">
         Latest Grants
       </Text>
-      <Grant
-        title="Grant Opportunity For Project"
-        description="Grant Opportunity For Specific Project :)"
-        footer="Available until October 13th, 2023"
-      />
-      <Grant
-        title="Grant Opportunity For Other Project"
-        description="Grant Opportunity For Not So Specific Project :("
-        footer="Available until August 29th, 2023"
-      />
-      <Grant
-        title="Grant Opportunity For Certain Projects"
-        description="Yep..."
-        footer="Available until November 11th, 2023"
-      />
-      <Grant
-        title="Grant"
-        description="Yep..."
-        footer="Available until November 11th, 2023"
-      />
+      {data ? (
+        data.map((grant) => (
+          <Grant
+            key={grant.id}
+            title={grant.title}
+            description={grant.description}
+            criteria={grant.criteria}
+            amount={grant.amount}
+            footer={"Available until " + grant.endDate.toLocaleDateString()}
+          />
+        ))
+      ) : (
+        <Text>Loading grants...</Text>
+      )}
     </>
   );
 }
@@ -58,10 +54,14 @@ export default function Page() {
 const Grant = ({
   title,
   description,
+  criteria,
+  amount,
   footer,
 }: {
   title: string;
   description: string;
+  criteria: string;
+  amount: number;
   footer: string;
 }) => {
   const [isGroupHover, setIsGroupHover] = useState(false);
@@ -83,10 +83,15 @@ const Grant = ({
         >
           <HStack justify="space-between" pe="1rem">
             <Stack>
-              <CardHeader fontSize="xl" fontWeight="bold">
+              <CardHeader fontSize="xl" fontWeight="bold" textAlign="start">
                 {title}
               </CardHeader>
-              <CardFooter color="blackAlpha.700" fontWeight="medium">
+              <CardBody textAlign="start">Amount: ${amount}</CardBody>
+              <CardFooter
+                color="blackAlpha.700"
+                fontWeight="medium"
+                textAlign="start"
+              >
                 {footer}
               </CardFooter>
             </Stack>
@@ -107,17 +112,19 @@ const Grant = ({
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-            Consequuntur nobis atque, aperiam reprehenderit tempora enim
-            architecto sequi optio, laboriosam, dolorum voluptatibus iste sunt
-            ipsam. Soluta minus aut maxime voluptatibus totam.
+            {description}
+            <br />
+            <br />
+            Criteria: {criteria}
+            <br />
+            Amount: ${amount}
           </ModalBody>
 
           <ModalFooter>
             <HStack justify="space-between" w="100%">
               <Text>{footer}</Text>
               <HStack>
-                <Button colorScheme="blue" mr={3} onClick={onClose}>
+                <Button colorScheme="blue" mr={3}>
                   Start Grant
                 </Button>
                 <Button variant="ghost" onClick={onClose}>
