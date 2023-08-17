@@ -34,16 +34,19 @@ export default function Page() {
         Latest Grants
       </Text>
       {data ? (
-        data.map((grant) => (
-          <Grant
-            key={grant.id}
-            title={grant.title}
-            description={grant.description}
-            criteria={grant.criteria}
-            amount={grant.amount}
-            footer={"Available until " + grant.endDate.toLocaleDateString()}
-          />
-        ))
+        data.map(
+          (grant) =>
+            grant.available && (
+              <Grant
+                key={grant.id}
+                title={grant.title}
+                description={grant.description}
+                criteria={grant.criteria}
+                amount={grant.amount}
+                footer={"Available until " + grant.endDate.toLocaleDateString()}
+              />
+            )
+        )
       ) : (
         <Text>Loading grants...</Text>
       )}
