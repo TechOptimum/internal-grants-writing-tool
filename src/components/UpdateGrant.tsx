@@ -84,17 +84,8 @@ const CreateGrant = ({
 
   const handleUpdateClick = async (id: string) => {
     try {
-      
-      const states = [
-        title,
-        description,
-        endDate,
-        amount,
-        criteria,
-      ];
 
-      for(const i of states) {
-        if(!i) {
+        if(!title || description || endDate || amount || criteria) {
           toast({
             title: "There are field(s) that are missing text, please fill them out ",
             status: "error",
@@ -103,7 +94,6 @@ const CreateGrant = ({
           });
           return;
         }
-      }
 
       await updateGrant.mutateAsync({
         title,
