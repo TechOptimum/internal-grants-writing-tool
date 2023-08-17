@@ -98,6 +98,7 @@ const Grant: React.FC<GrantProps> = ({
               initialCriteria={criteria}
               initialDescription={description}
               initialEndDate={endDate}
+              initialAvailability={available}
             />
           </ModalBody>
         </ModalContent>
