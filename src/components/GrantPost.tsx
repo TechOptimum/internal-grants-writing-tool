@@ -11,10 +11,14 @@ import {
   ModalCloseButton,
   ModalOverlay,
   ModalContent,
+  ModalHeader,
+  ModalFooter,
+  Button,
   useDisclosure,
 } from '@chakra-ui/react';
 import { RepeatIcon, DeleteIcon } from '@chakra-ui/icons';
 import UpdateGrant from './UpdateGrant';
+import Head from 'next/head';
 
 interface GrantProps {
   title: string;
@@ -33,11 +37,13 @@ const Grant: React.FC<GrantProps> = ({
   criteria,
   description,
 }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isOpenUpdateModal, onOpen: onOpenUpdateModal, onClose: onCloseUpdateModal } = useDisclosure();
+  const {isOpen: isOpenDeleteModal, onOpen: onOpenDeleteModal, onClose: onCloseDeleteModal} = useDisclosure();
 
   const deleteGrant = async () => {
     try {
       onDelete();
+      onCloseDeleteModal();
     } catch {
       console.error('There was an error performing this function');
     }
@@ -51,25 +57,27 @@ const Grant: React.FC<GrantProps> = ({
             {title}
           </CardHeader>
           <CardFooter color="blackAlpha.700" fontWeight="medium">
-            The amount paid is, ${amount}
+            Amount: {amount}
+            <br />
+            Grant ID: {grant_id}
           </CardFooter>
-          <Stack direction="row">
+          <Stack direction="row" justify='flex-end'>
             <IconButton
               aria-label="Delete"
               icon={<DeleteIcon />}
-              onClick={deleteGrant}
+              onClick={onOpenDeleteModal}
             />
             <IconButton
               aria-label="Update"
               icon={<RepeatIcon />}
-              onClick={onOpen}
+              onClick={onOpenUpdateModal}
             />
           </Stack>
         </Box>
       </Card>
       <Modal
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isOpenUpdateModal}
+        onClose={onCloseUpdateModal}
         isCentered
         closeOnOverlayClick={false}
       >
@@ -85,6 +93,23 @@ const Grant: React.FC<GrantProps> = ({
               initialDescription={description}
             />
           </ModalBody>
+        </ModalContent>
+      </Modal>
+      <Modal onClose={onCloseDeleteModal} isOpen={isOpenDeleteModal} isCentered>
+        <Head>
+          <title>Delete | TechOptimum Grants Writing Tool</title>
+        </Head>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirmation</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            Are you sure you want to delete this grant?
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={deleteGrant} colorScheme='red' marginRight={2}>Yes</Button>
+            <Button onClick={onCloseDeleteModal} colorScheme='blue'>No</Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

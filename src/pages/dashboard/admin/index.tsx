@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { api } from "~/utils/api";
 import {
   Button,
   Text,
@@ -11,13 +10,13 @@ import {
   useDisclosure,
   VStack,
   Wrap,
-  HStack,
-  Box,
   ModalHeader,
   Flex,
 } from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
 import CreateGrant from "~/components/CreateGrant";
 import GrantPost from "~/components/GrantPost";
+import { api } from "~/utils/api";
 
 const Admin = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,21 +47,24 @@ const Admin = () => {
       <Head>
         <title>Admin Dashboard | TechOptimum Grants Writing Tool</title>
       </Head>
-      <Box w="100%">
-        <HStack w="100%" justify="space-between">
-          <Text fontSize="4xl" fontWeight="bold">
-            Manage Grants
-          </Text>
-          <Button onClick={onOpen}>Create a grant</Button>
-        </HStack>
-
+      <>
+        <Text fontSize="4xl" fontWeight="bold">
+          Admin Portal
+        </Text>
+        <Text fontSize="lg" color={"grey"}>
+          To create a new grant, press the + button at the bottom of your
+          screen.
+        </Text>
+        <Flex justify="flex-end" position="fixed" bottom="20px" right="20px">
+          <Button onClick={onOpen} size={"lg"}>
+            <AddIcon />
+          </Button>
+        </Flex>
         <VStack w="100%" align="start">
           <Wrap w="100%" justify="center">
-            {" "}
-            {/* Set justify prop to center */}
-            {grants ? (
-              <>
-                {grants.map((grant) => (
+            {grants !== undefined ? (
+              grants.length > 0 ? (
+                grants.map((grant) => (
                   <GrantPost
                     key={grant.id}
                     title={grant.title}
@@ -72,14 +74,21 @@ const Admin = () => {
                     onDelete={() => void handleDeleteClick(grant.id)}
                     grant_id={grant.id}
                   />
-                ))}
-              </>
+                ))
+              ) : (
+                <VStack>
+                  <Text fontSize="3xl">No grants created yet...</Text>
+                  <Text color="grey">
+                    Do you want to create one? Make it with the + button
+                  </Text>
+                </VStack>
+              )
             ) : (
-              <p>Loading grants...</p>
+              <Text>Loading grants...</Text>
             )}
           </Wrap>
         </VStack>
-      </Box>
+      </>
       <Modal
         isOpen={isOpen}
         onClose={onClose}

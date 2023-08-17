@@ -80,8 +80,15 @@ const CreateGrant = () => {
         criteria,
         endDate,
       });
-
+      
       resetForm();
+      
+      toast({
+        title: "Created grant successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("Error creating grant:", error);
       toast({
