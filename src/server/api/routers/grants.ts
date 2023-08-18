@@ -1,12 +1,12 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, adminProcedure } from "../trpc";
 import { clerkClient } from "@clerk/nextjs";
 
 import { utapi } from "uploadthing/server";
 
 export const grantsRouter = createTRPCRouter({
-  create: protectedProcedure
+  create: adminProcedure
     .input(
       z.object({
         title: z.string(),
@@ -33,7 +33,7 @@ export const grantsRouter = createTRPCRouter({
     return ctx.prisma.grant.findMany();
   }),
 
-  deleteGrant: protectedProcedure
+  deleteGrant: adminProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return ctx.prisma.grant.delete({
@@ -43,7 +43,7 @@ export const grantsRouter = createTRPCRouter({
       });
     }),
 
-  updateGrant: protectedProcedure
+  updateGrant: adminProcedure
     .input(
       z.object({
         id: z.string(),
@@ -88,7 +88,7 @@ export const grantsRouter = createTRPCRouter({
         },
       });
     }),
-  unassignGrant: protectedProcedure
+  unassignGrant: adminProcedure
     .input(
       z.object({
         grantId: z.string(),
@@ -118,7 +118,7 @@ export const grantsRouter = createTRPCRouter({
         },
       });
     }),
-  getAllAssignedGrants: protectedProcedure.query(({ ctx }) => {
+  getAllAssignedGrants: adminProcedure.query(({ ctx }) => {
     return ctx.prisma.grant.findMany({
       where: {
         assignedTo: {
@@ -154,14 +154,14 @@ export const grantsRouter = createTRPCRouter({
         },
       });
     }),
-  getUploads: protectedProcedure.query(({ ctx }) => {
+  getUploads: adminProcedure.query(({ ctx }) => {
     return ctx.prisma.uploads.findMany({
       include: {
         grant: true,
       },
     });
   }),
-  deleteUpload: protectedProcedure
+  deleteUpload: adminProcedure
     .input(
       z.object({
         id: z.string(),
