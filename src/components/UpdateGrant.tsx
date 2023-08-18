@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from "react";
 import {
   Switch,
   Button,
@@ -11,12 +11,11 @@ import {
   Text,
   Flex,
   Divider,
-  useToast
-} from '@chakra-ui/react';
-import { AiFillFileText } from 'react-icons/ai';
-import {CloseIcon, CheckIcon} from '@chakra-ui/icons'
-import Head from 'next/head';
-import { api } from '~/utils/api';
+  useToast,
+} from "@chakra-ui/react";
+import { AiFillFileText } from "react-icons/ai";
+import Head from "next/head";
+import { api } from "~/utils/api";
 
 interface CreateGrantProps {
   grant_id: string;
@@ -48,7 +47,7 @@ const UpdateGrant = ({
 
   const { refetch } = api.grants.getGrants.useQuery();
 
-  const size = '3xl';
+  const size = "3xl";
 
   const updateGrant = api.grants.updateGrant.useMutation({
     onSuccess: () => {
@@ -57,18 +56,28 @@ const UpdateGrant = ({
   });
 
   const resetForm = () => {
-    const refs = [titleRef, descriptionRef, amountRef, criteriaRef, endDateRef, availableRef];
-    if (refs.every(ref => ref.current)) {
+    const refs = [
+      titleRef,
+      descriptionRef,
+      amountRef,
+      criteriaRef,
+      endDateRef,
+      availableRef,
+    ];
+    if (refs.every((ref) => ref.current)) {
       if (titleRef.current) titleRef.current.value = initialTitle;
-      if (descriptionRef.current) descriptionRef.current.value = initialDescription;
+      if (descriptionRef.current)
+        descriptionRef.current.value = initialDescription;
       if (amountRef.current) amountRef.current.value = initialAmount.toString();
       if (criteriaRef.current) criteriaRef.current.value = initialCriteria;
-      if (endDateRef.current) endDateRef.current.value = initialEndDate.toDateString();
-      if (availableRef.current) availableRef.current.checked = initialAvailability;
+      if (endDateRef.current)
+        endDateRef.current.value = initialEndDate.toDateString();
+      if (availableRef.current)
+        availableRef.current.checked = initialAvailability;
     }
   };
 
-  const handleUpdateClick = async (id: string) => {
+  const handleUpdateClick = (id: string) => {
     try {
       const refs = [
         titleRef,
@@ -89,7 +98,9 @@ const UpdateGrant = ({
       }
 
       const title = titleRef.current ? titleRef.current.value : "";
-      const amount = amountRef.current ? Number(amountRef.current.value) : Number(0);
+      const amount = amountRef.current
+        ? Number(amountRef.current.value)
+        : Number(0);
       const description = descriptionRef.current
         ? descriptionRef.current.value
         : "";
@@ -97,9 +108,11 @@ const UpdateGrant = ({
       const endDate = endDateRef.current
         ? new Date(endDateRef.current.value)
         : new Date();
-      const available = availableRef.current ? availableRef.current.checked : true;
+      const available = availableRef.current
+        ? availableRef.current.checked
+        : true;
 
-      await updateGrant.mutate({
+      updateGrant.mutate({
         title,
         amount,
         description,
@@ -116,7 +129,7 @@ const UpdateGrant = ({
         isClosable: true,
       });
     } catch (error) {
-      console.error('Error updating grant:', error);
+      console.error("Error updating grant:", error);
       toast({
         title: "Something went wrong.",
         description: "Check the logs for more information.",
@@ -143,7 +156,9 @@ const UpdateGrant = ({
       <FormControl isRequired>
         <FormLabel>Title</FormLabel>
         <InputGroup>
-          <InputLeftAddon children={<AiFillFileText />} />
+          <InputLeftAddon>
+            <AiFillFileText />
+          </InputLeftAddon>
           <Input
             type="text"
             placeholder="Update the title"
@@ -155,7 +170,7 @@ const UpdateGrant = ({
       <FormControl marginTop={4} isRequired>
         <FormLabel>Amount</FormLabel>
         <InputGroup>
-          <InputLeftAddon children="$" />
+          <InputLeftAddon>$</InputLeftAddon>
           <Input
             type="number"
             placeholder="Update the amount"

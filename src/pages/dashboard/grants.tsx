@@ -17,50 +17,43 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Divider,
 } from "@chakra-ui/react";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
 import type { UserResource } from "@clerk/types";
-import { useRouter } from "next/router";
+import { UploadButton } from "~/components/utils/uploadthing";
 
 export default function Page() {
-  const { data } = api.grants.getGrants.useQuery();
   const { isLoaded, user } = useUser();
 
   if (!isLoaded || !user) return null;
 
+  const { data } = api.grants.getAssignedGrants.useQuery({ userId: user.id });
+
   return (
     <>
       <Head>
-        <title>Dashboard | TechOptimum Grants Writing Tool</title>
+        <title>Grants | TechOptimum Grants Writing Tool</title>
       </Head>
       <Text fontSize="5xl" fontWeight="bold" mb="0.3rem">
-        Latest Grants
+        Assigned Grants
       </Text>
       {data ? (
-        data.filter((grant) => grant.available).length > 0 ? (
-          data.map(
-            (grant) =>
-              grant.available && (
-                <Grant
-                  key={grant.id}
-                  id={grant.id}
-                  title={grant.title}
-                  description={grant.description}
-                  criteria={grant.criteria}
-                  amount={grant.amount}
-                  footer={
-                    "Available until " + grant.endDate.toLocaleDateString()
-                  }
-                  user={user}
-                />
-              )
-          )
-        ) : (
-          <Text>No grants for now.</Text>
-        )
+        data.map((grant) => (
+          <Grant
+            key={grant.id}
+            id={grant.id}
+            title={grant.title}
+            description={grant.description}
+            criteria={grant.criteria}
+            amount={grant.amount}
+            footer={"Available until " + grant.endDate.toLocaleDateString()}
+            user={user}
+          />
+        ))
       ) : (
         <Text>Loading grants...</Text>
       )}
@@ -70,7 +63,6 @@ export default function Page() {
 
 const Grant = ({
   id,
-  user,
   title,
   description,
   criteria,
@@ -88,17 +80,7 @@ const Grant = ({
   const [isGroupHover, setIsGroupHover] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const router = useRouter();
-
-  const assignGrant = api.grants.assignGrant.useMutation();
-
-  const startGrant = () => {
-    assignGrant.mutate({
-      userId: user.id,
-      grantId: id,
-    });
-    void router.push("/dashboard/grants");
-  };
+  const grantUpload = api.grants.createUpload.useMutation();
 
   return (
     <>
@@ -145,21 +127,50 @@ const Grant = ({
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {description}
-            <br />
-            <br />
-            Criteria: {criteria}
-            <br />
-            Amount: ${amount}
+            <Box w="100%">
+              {description}
+              <br />
+              <br />
+              Criteria: {criteria}
+              <br />
+              Amount: ${amount}
+              <br />
+              <br />
+              Once you&apos;re done writing your grant request, you may upload
+              it here. After that please wait until we reach out to you on
+              Slack.
+            </Box>
+            <Divider colorScheme="blackAlpha" px="1rem" />
+            <UploadButton
+              endpoint="documentUploader"
+              onClientUploadComplete={(res) => {
+                // Do something with the response
+                if (!res) return;
+                if (!res[0]) return;
+                console.log("Files: ", res);
+                grantUpload.mutate({
+                  name: res[0].name,
+                  grantId: id,
+                  url: res[0].url,
+                });
+                alert("Upload Completed");
+              }}
+              onUploadError={(error: Error) => {
+                // Do something with the error.
+                alert(`ERROR! ${error.message}`);
+              }}
+            />
+            <Divider />
+            <Text>
+              If the upload button doesn&apos;t load, try closing the modal and
+              reopen it again. If not, refresh the page.
+            </Text>
           </ModalBody>
 
           <ModalFooter>
             <HStack justify="space-between" w="100%">
               <Text>{footer}</Text>
               <HStack>
-                <Button colorScheme="blue" mr={3} onClick={startGrant}>
-                  Start Grant
-                </Button>
                 <Button variant="ghost" onClick={onClose}>
                   Close
                 </Button>
