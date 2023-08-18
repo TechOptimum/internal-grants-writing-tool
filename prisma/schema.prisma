@@ -6,16 +6,27 @@ generator client {
 }
 
 datasource db {
-    provider     = "mongodb"
-    url          =  env("DATABASE_URL")
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
 }
 
 model Grant {
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-    title String
-    amount Int
+    id          String    @id @default(auto()) @map("_id") @db.ObjectId
+    title       String
+    amount      Int
     description String
-    criteria String
-    endDate DateTime
-    available Boolean @default(true)
+    criteria    String
+    endDate     DateTime
+    available   Boolean   @default(true)
+    assignedTo  String    @default("")
+    Uploads     Uploads[]
+}
+
+model Uploads {
+    id      String @id @default(auto()) @map("_id") @db.ObjectId
+    userId  String
+    url     String
+    name    String
+    grant   Grant  @relation(fields: [grantId], references: [id])
+    grantId String @db.ObjectId
 }

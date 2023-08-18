@@ -3,7 +3,6 @@ import React from "react";
 import {
   VStack,
   Box,
-  Link,
   Icon,
   Fade,
   Tooltip,
@@ -14,19 +13,22 @@ import {
   DrawerBody,
   useMediaQuery,
   DrawerFooter,
+  Divider,
 } from "@chakra-ui/react";
+import { Link } from "@chakra-ui/next-js";
 
 import { CloseIcon } from "@chakra-ui/icons";
 import { AiOutlineHome } from "react-icons/ai";
+import { BsChatLeftText, BsFileEarmarkText } from "react-icons/bs";
+import { HiOutlineInformationCircle } from "react-icons/hi";
 import {
-  BsChatLeftText,
-  BsFileEarmarkText,
-  BsPersonGear,
-} from "react-icons/bs";
-
-import { FiSettings } from "react-icons/fi";
+  MdOutlineAdminPanelSettings,
+  MdOutlineAssignmentInd,
+} from "react-icons/md";
+import { PiUploadSimple } from "react-icons/pi";
 
 import type { IconType } from "react-icons";
+import { useUser } from "@clerk/nextjs";
 
 interface SideBarProps {
   isOpen: boolean;
@@ -35,6 +37,10 @@ interface SideBarProps {
 
 export default function SideBar({ isOpen, onClose }: SideBarProps) {
   const [isSmallerThan500] = useMediaQuery("(max-width: 501px)");
+
+  const { user, isLoaded, isSignedIn } = useUser();
+
+  if (!user || !isLoaded || !isSignedIn) return null;
 
   if (isSmallerThan500) {
     return (
@@ -48,27 +54,58 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
               alignItems="center"
               justifyContent="space-between"
             >
-              <div>SideBar</div>
+              <div>Navigation Menu</div>
               <CloseIcon onClick={onClose} cursor="pointer" />
             </DrawerHeader>
             <DrawerBody>
-              <MobileNavLink href="/" icon={<AiOutlineHome size={20} />}>
+              <MobileNavLink
+                href="/dashboard"
+                icon={<AiOutlineHome size={20} />}
+              >
                 Home
               </MobileNavLink>
-              <MobileNavLink href="/" icon={<BsFileEarmarkText size={20} />}>
+              <MobileNavLink
+                href="/dashboard/grants"
+                icon={<BsFileEarmarkText size={20} />}
+              >
                 Grants
               </MobileNavLink>
-              <MobileNavLink href="/" icon={<BsChatLeftText size={20} />}>
+              <MobileNavLink
+                href="/dashboard/feedback"
+                icon={<BsChatLeftText size={20} />}
+              >
                 Feedback
               </MobileNavLink>
-              <MobileNavLink href="/" icon={<FiSettings size={20} />}>
-                Settings
-              </MobileNavLink>
-              {/* Moved User Settings to the bottom */}
+              {user.publicMetadata.admin ? (
+                <>
+                  <Divider colorScheme="red" />
+                  <MobileNavLink
+                    href="/dashboard/admin"
+                    icon={<MdOutlineAdminPanelSettings />}
+                  >
+                    Admin Dashboard
+                  </MobileNavLink>
+                  <MobileNavLink
+                    href="/dashboard/admin/uploads"
+                    icon={<PiUploadSimple />}
+                  >
+                    Uploads
+                  </MobileNavLink>
+                  <MobileNavLink
+                    href="/dashboard/admin/assigns"
+                    icon={<MdOutlineAssignmentInd />}
+                  >
+                    Assigns
+                  </MobileNavLink>
+                </>
+              ) : null}
             </DrawerBody>
             <DrawerFooter borderTopWidth="1px">
-              <MobileNavLink href="/" icon={<BsPersonGear size={20} />}>
-                User Settings
+              <MobileNavLink
+                href="/dashboard"
+                icon={<HiOutlineInformationCircle size={20} />}
+              >
+                Information
               </MobileNavLink>
             </DrawerFooter>
           </DrawerContent>
@@ -98,7 +135,7 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
         >
           <VStack w="100%">
             <SideBtn
-              href="/"
+              href="/dashboard"
               icon={AiOutlineHome}
               isOpen={isOpen}
               isSmallerThan500={isSmallerThan500}
@@ -106,7 +143,7 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
               Home
             </SideBtn>
             <SideBtn
-              href="/"
+              href="/dashboard/grants"
               icon={BsFileEarmarkText}
               isOpen={isOpen}
               isSmallerThan500={isSmallerThan500}
@@ -114,29 +151,50 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
               Grants
             </SideBtn>
             <SideBtn
-              href="/"
+              href="/dashboard/feedback"
               icon={BsChatLeftText}
               isOpen={isOpen}
               isSmallerThan500={isSmallerThan500}
             >
               Feedback
             </SideBtn>
-            <SideBtn
-              href="/"
-              icon={FiSettings}
-              isOpen={isOpen}
-              isSmallerThan500={isSmallerThan500}
-            >
-              Settings
-            </SideBtn>
+            {user.publicMetadata.admin ? (
+              <>
+                <Divider colorScheme="red" />
+                <SideBtn
+                  href="/dashboard/admin"
+                  icon={MdOutlineAdminPanelSettings}
+                  isOpen={isOpen}
+                  isSmallerThan500={isSmallerThan500}
+                >
+                  Admin Dashboard
+                </SideBtn>
+                <SideBtn
+                  href="/dashboard/admin/uploads"
+                  icon={PiUploadSimple}
+                  isOpen={isOpen}
+                  isSmallerThan500={isSmallerThan500}
+                >
+                  Uploads
+                </SideBtn>
+                <SideBtn
+                  href="/dashboard/admin/assigns"
+                  icon={MdOutlineAssignmentInd}
+                  isOpen={isOpen}
+                  isSmallerThan500={isSmallerThan500}
+                >
+                  Assigns
+                </SideBtn>
+              </>
+            ) : null}
           </VStack>
           <SideBtn
-            href="/"
-            icon={BsPersonGear}
+            href="/dashboard"
+            icon={HiOutlineInformationCircle}
             isOpen={isOpen}
             isSmallerThan500={isSmallerThan500}
           >
-            User Settings
+            Information
           </SideBtn>
         </VStack>
       </VStack>

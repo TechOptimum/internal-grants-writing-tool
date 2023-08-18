@@ -1,6 +1,9 @@
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { clerkClient } from "@clerk/nextjs";
+
+import { utapi } from "uploadthing/server";
 
 export const grantsRouter = createTRPCRouter({
   create: protectedProcedure
@@ -64,6 +67,112 @@ export const grantsRouter = createTRPCRouter({
           criteria: input.criteria,
           endDate: input.endDate,
           available: input.available,
+        },
+      });
+    }),
+  assignGrant: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        grantId: z.string(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.grant.update({
+        where: {
+          id: input.grantId,
+        },
+        data: {
+          available: false,
+          assignedTo: input.userId,
+        },
+      });
+    }),
+  unassignGrant: protectedProcedure
+    .input(
+      z.object({
+        grantId: z.string(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.grant.update({
+        where: {
+          id: input.grantId,
+        },
+        data: {
+          available: true,
+          assignedTo: "",
+        },
+      });
+    }),
+  getAssignedGrants: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.grant.findMany({
+        where: {
+          assignedTo: input.userId,
+        },
+      });
+    }),
+  getAllAssignedGrants: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.grant.findMany({
+      where: {
+        assignedTo: {
+          not: "",
+        },
+      },
+    });
+  }),
+  getUserById: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      return await clerkClient.users.getUser(input.userId);
+    }),
+  createUpload: protectedProcedure
+    .input(
+      z.object({
+        url: z.string(),
+        name: z.string(),
+        grantId: z.string(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.uploads.create({
+        data: {
+          userId: ctx.auth.userId,
+          url: input.url,
+          name: input.name,
+          grantId: input.grantId,
+        },
+      });
+    }),
+  getUploads: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.uploads.findMany({
+      include: {
+        grant: true,
+      },
+    });
+  }),
+  deleteUpload: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await utapi.deleteFiles(input.name);
+      return ctx.prisma.uploads.delete({
+        where: {
+          id: input.id,
         },
       });
     }),

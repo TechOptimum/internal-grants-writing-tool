@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Card,
   CardHeader,
@@ -15,12 +15,13 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-} from '@chakra-ui/react';
-import { RepeatIcon, DeleteIcon } from '@chakra-ui/icons';
-import UpdateGrant from './UpdateGrant';
-import Head from 'next/head';
+} from "@chakra-ui/react";
+import { RepeatIcon, DeleteIcon } from "@chakra-ui/icons";
+import UpdateGrant from "./UpdateGrant";
+import { api } from "~/utils/api";
 
 interface GrantProps {
+  userId: string;
   title: string;
   amount: number;
   criteria: string;
@@ -29,9 +30,11 @@ interface GrantProps {
   grant_id: string;
   endDate: Date;
   available: boolean;
+  assigned: string;
 }
 
 const Grant: React.FC<GrantProps> = ({
+  userId,
   title,
   onDelete,
   amount,
@@ -39,23 +42,35 @@ const Grant: React.FC<GrantProps> = ({
   criteria,
   description,
   endDate,
-  available
+  available,
+  assigned,
 }) => {
-  const { isOpen: isOpenUpdateModal, onOpen: onOpenUpdateModal, onClose: onCloseUpdateModal } = useDisclosure();
-  const {isOpen: isOpenDeleteModal, onOpen: onOpenDeleteModal, onClose: onCloseDeleteModal} = useDisclosure();
+  const {
+    isOpen: isOpenUpdateModal,
+    onOpen: onOpenUpdateModal,
+    onClose: onCloseUpdateModal,
+  } = useDisclosure();
 
-  const deleteGrant = async () => {
+  const {
+    isOpen: isOpenDeleteModal,
+    onOpen: onOpenDeleteModal,
+    onClose: onCloseDeleteModal,
+  } = useDisclosure();
+
+  const user = api.grants.getUserById.useQuery({ userId });
+
+  const deleteGrant = () => {
     try {
       onDelete();
       onCloseDeleteModal();
     } catch {
-      console.error('There was an error performing this function');
+      console.error("There was an error performing this function");
     }
   };
 
   return (
     <>
-      <Card w={{ base: '280px', md: '550px' }}>
+      <Card w={{ base: "280px", md: "550px" }}>
         <Box w="100%">
           <CardHeader fontSize="xl" fontWeight="bold">
             {title}
@@ -65,9 +80,16 @@ const Grant: React.FC<GrantProps> = ({
             <br />
             Grant ID: {grant_id}
             <br />
-            Availablity: {available ? 'Available':'Not available'}
+            Availablity: {available ? "Available" : "Not available"}
+            <br />
+            {assigned
+              ? "Assigned to: " +
+                user.data?.firstName +
+                " " +
+                user.data?.lastName
+              : "Not assigned"}
           </CardFooter>
-          <Stack direction="row" justify='flex-end'>
+          <Stack direction="row" justify="flex-end">
             <IconButton
               aria-label="Delete"
               icon={<DeleteIcon />}
@@ -104,19 +126,18 @@ const Grant: React.FC<GrantProps> = ({
         </ModalContent>
       </Modal>
       <Modal onClose={onCloseDeleteModal} isOpen={isOpenDeleteModal} isCentered>
-        <Head>
-          <title>Delete | TechOptimum Grants Writing Tool</title>
-        </Head>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Confirmation</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            Are you sure you want to delete this grant?
-          </ModalBody>
+          <ModalBody>Are you sure you want to delete this grant?</ModalBody>
           <ModalFooter>
-            <Button onClick={deleteGrant} colorScheme='red' marginRight={2}>Yes</Button>
-            <Button onClick={onCloseDeleteModal} colorScheme='blue'>No</Button>
+            <Button onClick={deleteGrant} colorScheme="red" marginRight={2}>
+              Yes
+            </Button>
+            <Button onClick={onCloseDeleteModal} colorScheme="blue">
+              No
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

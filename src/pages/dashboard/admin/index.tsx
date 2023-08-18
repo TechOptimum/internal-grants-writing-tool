@@ -12,11 +12,13 @@ import {
   Wrap,
   ModalHeader,
   Flex,
+  Center,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import CreateGrant from "~/components/CreateGrant";
 import GrantPost from "~/components/GrantPostAdmin";
 import { api } from "~/utils/api";
+import { useUser } from "@clerk/nextjs";
 
 const Admin = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -41,6 +43,21 @@ const Admin = () => {
       console.error("Error deleting grant:", error);
     }
   };
+
+  const { user, isLoaded, isSignedIn } = useUser();
+
+  if (!user || !isLoaded || !isSignedIn) return null;
+
+  if (!user.publicMetadata.admin) {
+    return (
+      <>
+        <Head>
+          <title>Page not found</title>
+        </Head>
+        <Center>403 - Unauthorized</Center>
+      </>
+    );
+  }
 
   return (
     <>
@@ -67,6 +84,7 @@ const Admin = () => {
                 grants.map((grant) => (
                   <GrantPost
                     key={grant.id}
+                    userId={grant.assignedTo}
                     title={grant.title}
                     amount={grant.amount}
                     criteria={grant.criteria}
@@ -75,6 +93,7 @@ const Admin = () => {
                     grant_id={grant.id}
                     endDate={grant.endDate}
                     available={grant.available}
+                    assigned={grant.assignedTo}
                   />
                 ))
               ) : (
