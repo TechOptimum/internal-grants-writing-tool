@@ -159,12 +159,7 @@ const UpdateGrant = ({
           <InputLeftAddon>
             <AiFillFileText />
           </InputLeftAddon>
-          <Input
-            type="text"
-            placeholder="Update the title"
-            value={initialTitle}
-            ref={titleRef}
-          />
+          <Input type="text" placeholder="Update the title" ref={titleRef} />
         </InputGroup>
       </FormControl>
       <FormControl marginTop={4} isRequired>
@@ -174,34 +169,21 @@ const UpdateGrant = ({
           <Input
             type="number"
             placeholder="Update the amount"
-            value={initialAmount}
             ref={amountRef}
           />
         </InputGroup>
       </FormControl>
       <FormControl marginTop={4} isRequired>
         <FormLabel>Description</FormLabel>
-        <Textarea
-          placeholder="Update the description"
-          value={initialDescription}
-          ref={descriptionRef}
-        />
+        <Textarea placeholder="Update the description" ref={descriptionRef} />
       </FormControl>
       <FormControl marginTop={4} isRequired>
         <FormLabel>Criteria</FormLabel>
-        <Textarea
-          placeholder="Update the grant's criteria"
-          value={initialCriteria}
-          ref={criteriaRef}
-        />
+        <Textarea placeholder="Update the grant's criteria" ref={criteriaRef} />
       </FormControl>
       <FormControl marginTop={4} isRequired>
         <FormLabel>End Date</FormLabel>
-        <Input
-          type="date"
-          value={initialEndDate.toLocaleDateString()}
-          ref={endDateRef}
-        />
+        <Input type="date" ref={endDateRef} />
       </FormControl>
       <FormControl marginTop={4} isRequired>
         <FormLabel>Toggle Availability</FormLabel>
