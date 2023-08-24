@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import {
   Switch,
   Button,
@@ -36,18 +36,17 @@ const UpdateGrant = ({
   initialEndDate,
   initialAvailability,
 }: CreateGrantProps) => {
-  const titleRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLTextAreaElement>(null);
-  const amountRef = useRef<HTMLInputElement>(null);
-  const criteriaRef = useRef<HTMLTextAreaElement>(null);
-  const endDateRef = useRef<HTMLInputElement>(null);
-  const availableRef = useRef<HTMLInputElement>(null);
+  const [title, setTitle] = useState(initialTitle);
+  const [amount, setAmount] = useState(initialAmount);
+  const [description, setDescription] = useState(initialDescription);
+  const [criteria, setCriteria] = useState(initialCriteria);
+  const [endDate, setEndDate] = useState(initialEndDate);
+  const [available, setAvailable] = useState(initialAvailability);
 
   const toast = useToast();
 
   const { refetch } = api.grants.getGrants.useQuery();
 
-  const size = "3xl";
 
   const updateGrant = api.grants.updateGrant.useMutation({
     onSuccess: () => {
@@ -56,61 +55,19 @@ const UpdateGrant = ({
   });
 
   const resetForm = () => {
-    const refs = [
-      titleRef,
-      descriptionRef,
-      amountRef,
-      criteriaRef,
-      endDateRef,
-      availableRef,
-    ];
-    if (refs.every((ref) => ref.current)) {
-      if (titleRef.current) titleRef.current.value = initialTitle;
-      if (descriptionRef.current)
-        descriptionRef.current.value = initialDescription;
-      if (amountRef.current) amountRef.current.value = initialAmount.toString();
-      if (criteriaRef.current) criteriaRef.current.value = initialCriteria;
-      if (endDateRef.current)
-        endDateRef.current.value = initialEndDate.toDateString();
-      if (availableRef.current)
-        availableRef.current.checked = initialAvailability;
-    }
+    setTitle(initialTitle);
+    setAmount(initialAmount);
+    setDescription(initialDescription);
+    setCriteria(initialCriteria);
+    setEndDate(initialEndDate);
+    setAvailable(initialAvailability);
   };
 
   const handleUpdateClick = (id: string) => {
     try {
-      const refs = [
-        titleRef,
-        descriptionRef,
-        endDateRef,
-        amountRef,
-        criteriaRef,
-      ];
-
-      for (const i of refs) {
-        if (i.current) {
-          if (i.current.value === "") {
-            return;
-          }
-        } else {
-          return;
-        }
+      if (!title || !description || !endDate) {
+        return;
       }
-
-      const title = titleRef.current ? titleRef.current.value : "";
-      const amount = amountRef.current
-        ? Number(amountRef.current.value)
-        : Number(0);
-      const description = descriptionRef.current
-        ? descriptionRef.current.value
-        : "";
-      const criteria = criteriaRef.current ? criteriaRef.current.value : "";
-      const endDate = endDateRef.current
-        ? new Date(endDateRef.current.value)
-        : new Date();
-      const available = availableRef.current
-        ? availableRef.current.checked
-        : true;
 
       updateGrant.mutate({
         title,
@@ -142,24 +99,18 @@ const UpdateGrant = ({
 
   return (
     <>
-      <Head>
-        <title>Grant Update | TechOptimum Grants Writing Tool</title>
-      </Head>
-      <Flex align="center" marginBottom="1rem">
-        <Text fontSize={size} fontWeight="bold">
-          Update a Grant
-        </Text>
-      </Flex>
-      <Text marginBottom={4} color="gray">
-        Update the grant as you wish!
-      </Text>
       <FormControl isRequired>
         <FormLabel>Title</FormLabel>
         <InputGroup>
           <InputLeftAddon>
             <AiFillFileText />
           </InputLeftAddon>
-          <Input type="text" placeholder="Update the title" ref={titleRef} />
+          <Input
+            type="text"
+            placeholder="Update the title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
         </InputGroup>
       </FormControl>
       <FormControl marginTop={4} isRequired>
@@ -169,25 +120,41 @@ const UpdateGrant = ({
           <Input
             type="number"
             placeholder="Update the amount"
-            ref={amountRef}
+            value={amount}
+            onChange={(e) => setAmount(Number(e.target.value))}
           />
         </InputGroup>
       </FormControl>
       <FormControl marginTop={4} isRequired>
         <FormLabel>Description</FormLabel>
-        <Textarea placeholder="Update the description" ref={descriptionRef} />
+        <Textarea
+          placeholder="Update the description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
       </FormControl>
       <FormControl marginTop={4} isRequired>
         <FormLabel>Criteria</FormLabel>
-        <Textarea placeholder="Update the grant's criteria" ref={criteriaRef} />
+        <Textarea
+          placeholder="Update the grant's criteria"
+          value={criteria}
+          onChange={(e) => setCriteria(e.target.value)}
+        />
       </FormControl>
       <FormControl marginTop={4} isRequired>
         <FormLabel>End Date</FormLabel>
-        <Input type="date" ref={endDateRef} />
+        <Input
+          type="date"
+          value={endDate.toISOString().split("T")[0]}
+          onChange={(e) => setEndDate(new Date(e.target.value))}
+        />
       </FormControl>
       <FormControl marginTop={4} isRequired>
         <FormLabel>Toggle Availability</FormLabel>
-        <Switch defaultChecked={initialAvailability} />
+        <Switch
+          defaultChecked={initialAvailability}
+          onChange={() => setAvailable(!available)}
+        />
       </FormControl>
       <Divider my={6} />
       <Flex justifyContent="flex-end" marginTop={8}>

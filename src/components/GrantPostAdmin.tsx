@@ -5,7 +5,7 @@ import {
   CardFooter,
   Box,
   Stack,
-  IconButton,
+  Text,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -15,8 +15,9 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
-import { RepeatIcon, DeleteIcon } from "@chakra-ui/icons";
+import { RepeatIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import UpdateGrant from "./UpdateGrant";
 import { api } from "~/utils/api";
 
@@ -57,12 +58,20 @@ const Grant: React.FC<GrantProps> = ({
     onClose: onCloseDeleteModal,
   } = useDisclosure();
 
+  const toast = useToast()
+
   const user = api.grants.getUserById.useQuery({ userId });
 
   const deleteGrant = () => {
     try {
       onDelete();
       onCloseDeleteModal();
+      toast({
+        title: "Deleted grant successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } catch {
       console.error("There was an error performing this function");
     }
@@ -70,12 +79,12 @@ const Grant: React.FC<GrantProps> = ({
 
   return (
     <>
-      <Card w={{ base: "280px", md: "550px" }}>
+      <Card w="100%">
         <Box w="100%">
           <CardHeader fontSize="xl" fontWeight="bold">
             {title}
           </CardHeader>
-          <CardFooter color="blackAlpha.700" fontWeight="medium">
+          <CardFooter fontWeight="medium">
             Amount: {amount}
             <br />
             Grant ID: {grant_id}
@@ -83,23 +92,26 @@ const Grant: React.FC<GrantProps> = ({
             Availablity: {available ? "Available" : "Not available"}
             <br />
             {assigned
-              ? "Assigned to: " +
-                user.data?.firstName +
-                " " +
-                user.data?.lastName
+              ? `Assigned to: ${user.data?.firstName} ${user.data?.lastName}`
               : "Not assigned"}
           </CardFooter>
           <Stack direction="row" justify="flex-end">
-            <IconButton
-              aria-label="Delete"
-              icon={<DeleteIcon />}
+            <Button
+              flex="1"
+              variant="ghost"
+              leftIcon={<DeleteIcon />}
               onClick={onOpenDeleteModal}
-            />
-            <IconButton
-              aria-label="Update"
-              icon={<RepeatIcon />}
+            >
+              Delete
+            </Button>
+            <Button
+              flex="1"
+              variant="ghost"
+              leftIcon={<EditIcon />}
               onClick={onOpenUpdateModal}
-            />
+            >
+              Edit
+            </Button>
           </Stack>
         </Box>
       </Card>
@@ -108,31 +120,50 @@ const Grant: React.FC<GrantProps> = ({
         onClose={onCloseUpdateModal}
         isCentered
         closeOnOverlayClick={false}
+        size="2xl"
+        scrollBehavior="inside"
       >
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
+          <ModalHeader>
+            <Text fontSize="3xl" fontWeight="bold">
+              Update the grant
+            </Text>
+            <Text marginBottom={4} color="gray" fontWeight="medium">
+              Update your grant as you please!
+            </Text>
+          </ModalHeader>
           <ModalBody pb={6}>
             <UpdateGrant
-              grant_id={grant_id}
-              initialTitle={title}
-              initialAmount={amount}
-              initialCriteria={criteria}
-              initialDescription={description}
-              initialEndDate={endDate}
-              initialAvailability={available}
-            />
+                grant_id={grant_id}
+                initialTitle={title}
+                initialAmount={amount}
+                initialCriteria={criteria}
+                initialDescription={description}
+                initialEndDate={endDate}
+                initialAvailability={available}
+              />
           </ModalBody>
         </ModalContent>
       </Modal>
-      <Modal onClose={onCloseDeleteModal} isOpen={isOpenDeleteModal} isCentered>
+      <Modal
+        onClose={onCloseDeleteModal}
+        isOpen={isOpenDeleteModal}
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Confirmation</ModalHeader>
           <ModalCloseButton />
           <ModalBody>Are you sure you want to delete this grant?</ModalBody>
           <ModalFooter>
-            <Button onClick={deleteGrant} colorScheme="red" marginRight={2}>
+            <Button
+              onClick={deleteGrant}
+              variant="outline"
+              colorScheme="blue"
+              marginRight={2}
+            >
               Yes
             </Button>
             <Button onClick={onCloseDeleteModal} colorScheme="blue">
