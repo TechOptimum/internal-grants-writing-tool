@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   VStack,
   Box,
@@ -14,6 +13,8 @@ import {
   useMediaQuery,
   DrawerFooter,
   Divider,
+  Image,
+  useColorMode
 } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
 
@@ -33,14 +34,16 @@ import { useUser } from "@clerk/nextjs";
 interface SideBarProps {
   isOpen: boolean;
   onClose: () => void;
+  onToggle: () => void;
 }
 
-export default function SideBar({ isOpen, onClose }: SideBarProps) {
+export default function SideBar({ isOpen, onClose, onToggle }: SideBarProps) {
   const [isSmallerThan500] = useMediaQuery("(max-width: 501px)");
 
   const { user, isLoaded, isSignedIn } = useUser();
 
   if (!user || !isLoaded || !isSignedIn) return null;
+  const {colorMode} = useColorMode()
 
   if (isSmallerThan500) {
     return (
@@ -134,6 +137,40 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
           justify="space-between"
         >
           <VStack w="100%">
+          <Tooltip
+          label={
+            !isOpen ? "Open full navigation menu" : "Close full navigation menu"
+          }
+          placement="right"
+          bg={colorMode === "light" ? "gray.800" : "gray.300"}
+          borderRadius="8px"
+          p="8px"
+          fontSize="16px"
+        >
+          {colorMode === "light" ? (
+            <Image
+              w="25px"
+              h="auto"
+              ml={!isOpen ? "0" : "1.5rem"}
+              src="/logo-whitemode.png"
+              alt="TechOptimum"
+              cursor="pointer"
+              onClick={onToggle}
+              transitionDuration="500ms"
+            />
+          ) : (
+            <Image
+              w="25px"
+              h="auto"
+              ml={!isOpen ? "0" : "1.5rem"}
+              src="/logo-blackmode.png"
+              alt="TechOptimum"
+              cursor="pointer"
+              onClick={onToggle}
+              transitionDuration="500ms"
+            />
+          )}
+        </Tooltip>
             <SideBtn
               href="/dashboard"
               icon={AiOutlineHome}
@@ -230,6 +267,9 @@ const SideBtn: React.FC<SideBtnProps> = ({
         py="0.6rem"
         transition="all"
         transitionDuration="0.7s"
+        whiteSpace="nowrap"       // Prevent text wrapping
+        overflow="hidden"         // Hide overflowing content
+        textOverflow="ellipsis"  // Show ellipsis for truncated text
       >
         <Link
           display="flex"
@@ -257,6 +297,7 @@ const SideBtn: React.FC<SideBtnProps> = ({
     </Tooltip>
   );
 };
+
 
 const MobileNavLink = ({
   href,

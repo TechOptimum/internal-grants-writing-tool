@@ -17,23 +17,22 @@ export default function Layout({ children }: { children: ReactNode }) {
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <VStack align="start" justify="start" gap={0} h="100dvh">
-        <NavBar onToggle={onToggle} isOpen={isOpen} />
-        <HStack flexShrink="1" h="100%" w="100%">
-          {!/(sign-in|sign-up)/.test(pathname) && isSignedIn && (
-            <SideBar isOpen={isOpen} onClose={onClose} />
-          )}
+      <HStack align="stretch" h="100vh"   >
+        {/(sign-in|sign-up)/.test(pathname) || !isSignedIn ? null : (
+          <SideBar isOpen={isOpen} onClose={onClose} onToggle={onToggle} />
+        )}
+        <VStack align="start" justify="start" spacing={0} flex={1} overflow="auto">
+          <NavBar onToggle={onToggle} isOpen={isOpen} />
           <Box
-            h="100%"
             w="100%"
             p={{ base: "1rem", sm: "2rem" }}
             overflow="visible"
-            flexShrink="1"
+            flex="1" // Allow the content to grow
           >
-            <VStack align="start">{children}</VStack>
+            {children}
           </Box>
-        </HStack>
-      </VStack>
+        </VStack>
+      </HStack>
     </>
   );
 }

@@ -3,11 +3,11 @@ import {
   Image,
   HStack,
   useMediaQuery,
-  Tooltip,
   IconButton,
   useColorMode,
   Button,
   Flex,
+  Text,
 } from "@chakra-ui/react";
 
 import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
@@ -34,49 +34,27 @@ export default function NavBar({ isOpen, onToggle }: NavBarProps) {
       borderColor={colorMode === "light" ? "gray.500" : "gray.700"}
     >
       <HStack>
-        {!isSmallerThan500 && (
-          <IconButton
-            aria-label="Open Navigation Menu"
-            onClick={onToggle}
-            icon={<HamburgerIcon />}
-          />
+        {!isSmallerThan500 ? (
+          <>
+            <IconButton
+              aria-label="Open Navigation Menu"
+              onClick={onToggle}
+              icon={<HamburgerIcon />}
+            />
+            <Image
+              w="25px"
+              h="auto"
+              ml={!isOpen ? "0" : "1.5rem"}
+              src={colorMode === "light" ? "/logo-whitemode.png" : "/logo-blackmode.png"}
+              alt="TechOptimum"
+            />
+          </>
+        ) : (
+          <Text fontSize="2xl" align="center">
+            Grant Internal Tool
+          </Text>
         )}
-        <Tooltip
-          label={
-            !isOpen ? "Open full navigation menu" : "Close full navigation menu"
-          }
-          placement="right"
-          bg={colorMode === "light" ? "gray.800" : "gray.300"}
-          borderRadius="8px"
-          p="8px"
-          fontSize="16px"
-        >
-          {colorMode === "light" ? (
-            <Image
-              w="25px"
-              h="auto"
-              ml={!isOpen ? "0" : "1.5rem"}
-              src="/logo-whitemode.png"
-              alt="TechOptimum"
-              cursor="pointer"
-              onClick={onToggle}
-              transitionDuration="500ms"
-            />
-          ) : (
-            <Image
-              w="25px"
-              h="auto"
-              ml={!isOpen ? "0" : "1.5rem"}
-              src="/logo-blackmode.png"
-              alt="TechOptimum"
-              cursor="pointer"
-              onClick={onToggle}
-              transitionDuration="500ms"
-            />
-          )}
-        </Tooltip>
       </HStack>
-
       <Flex align="center">
         <UserButton />
         <Button onClick={toggleColorMode} ml="1rem">
