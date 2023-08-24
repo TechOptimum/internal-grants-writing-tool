@@ -17,6 +17,7 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import { useState } from "react";
@@ -88,6 +89,9 @@ const Grant = ({
   const [isGroupHover, setIsGroupHover] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const hoverColor = useColorModeValue("rgb(240,240,240)", "whiteAlpha.100");
+  const availabilityColor = useColorModeValue("blackAlpha.700", "whiteAlpha.500");
+
   const router = useRouter();
 
   const assignGrant = api.grants.assignGrant.useMutation();
@@ -109,7 +113,7 @@ const Grant = ({
           w="100%"
           transitionDuration="100ms"
           _hover={{
-            backgroundColor: "rgb(240,240,240)",
+            backgroundColor: hoverColor,
           }}
           onMouseEnter={() => setIsGroupHover(true)}
           onMouseLeave={() => setIsGroupHover(false)}
@@ -121,7 +125,7 @@ const Grant = ({
               </CardHeader>
               <CardBody textAlign="start">Amount: ${amount}</CardBody>
               <CardFooter
-                color="blackAlpha.700"
+                color={availabilityColor}
                 fontWeight="medium"
                 textAlign="start"
               >
