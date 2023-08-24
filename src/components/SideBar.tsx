@@ -42,8 +42,9 @@ export default function SideBar({ isOpen, onClose, onToggle }: SideBarProps) {
 
   const { user, isLoaded, isSignedIn } = useUser();
 
+  const {colorMode} = useColorMode();
+
   if (!user || !isLoaded || !isSignedIn) return null;
-  const {colorMode} = useColorMode()
 
   if (isSmallerThan500) {
     return (
