@@ -159,6 +159,22 @@ const Grant = ({
                 // Do something with the error.
                 alert(`ERROR! ${error.message}`);
               }}
+              appearance={{
+                button({ ready, isUploading }) {
+                  return {
+                    fontSize: "1.6rem",
+                    color: "black",
+                    ...(ready && { color: "#ecfdf5" }),
+                    ...(isUploading && { color: "#d1d5db" }),
+                  };
+                },
+                container: {
+                  marginTop: "1rem",
+                },
+                allowedContent: {
+                  color: "#a1a1aa",
+                },
+              }}
             />
             <Divider />
             <Text>
