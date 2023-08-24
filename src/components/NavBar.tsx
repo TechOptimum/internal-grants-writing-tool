@@ -30,7 +30,6 @@ export default function NavBar({ isOpen, onToggle }: NavBarProps) {
       py="0.9rem"
       align="center"
       justify="space-between"
-      borderBottom="1px solid"
       borderColor={colorMode === "light" ? "gray.500" : "gray.700"}
     >
       <HStack>
@@ -50,7 +49,7 @@ export default function NavBar({ isOpen, onToggle }: NavBarProps) {
             />
           </>
         ) : (
-          <Text fontSize="2xl" align="center">
+          <Text fontSize="2xl"  fontWeight="bold" align="center">
             Grant Internal Tool
           </Text>
         )}
