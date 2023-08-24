@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 const Information = () => {
   const router = useRouter()
   const goToDashboard = () => {
-    router.push("/dashboard")
+    void router.push("/dashboard")
   }
   return (
     <Container w="100%" alignSelf="center">
