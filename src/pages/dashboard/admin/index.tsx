@@ -7,12 +7,13 @@ import {
   ModalOverlay,
   ModalContent,
   ModalCloseButton,
-  useDisclosure,
   VStack,
   Wrap,
   ModalHeader,
   Flex,
   Center,
+  Heading,
+  useDisclosure
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import CreateGrant from "~/components/CreateGrant";
@@ -37,8 +38,6 @@ const Admin = () => {
       await deleteGrant.mutateAsync({
         id,
       });
-
-      alert("Deleted successfully");
     } catch (error) {
       console.error("Error deleting grant:", error);
     }
@@ -65,18 +64,18 @@ const Admin = () => {
         <title>Admin Dashboard | TechOptimum Grants Writing Tool</title>
       </Head>
       <>
-        <Text fontSize="4xl" fontWeight="bold">
+      <Flex justify="space-between" alignItems="center" mb={4}>
+        <Heading fontSize="4xl" fontWeight="bold">
           Admin Portal
-        </Text>
+        </Heading>
+        <Button onClick={onOpen} size="lg" marginLeft={3}>
+          <AddIcon />
+        </Button>
+      </Flex>
         <Text fontSize="lg" color={"grey"}>
           To create a new grant, press the + button at the bottom of your
           screen.
         </Text>
-        <Flex justify="flex-end" position="fixed" bottom="20px" right="20px">
-          <Button onClick={onOpen} size={"lg"}>
-            <AddIcon />
-          </Button>
-        </Flex>
         <VStack w="100%" align="start">
           <Wrap w="100%" justify="center">
             {grants !== undefined ? (

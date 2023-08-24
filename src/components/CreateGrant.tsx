@@ -34,7 +34,7 @@ const CreateGrant = () => {
     onSuccess: () => {
       void refetch();
     },
-  });
+  }); 
 
   const resetForm = () => {
     const refs = [titleRef, descriptionRef, endDateRef, amountRef, criteriaRef];

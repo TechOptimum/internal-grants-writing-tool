@@ -189,7 +189,7 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
             ) : null}
           </VStack>
           <SideBtn
-            href="/dashboard"
+            href="/dashboard/information"
             icon={HiOutlineInformationCircle}
             isOpen={isOpen}
             isSmallerThan500={isSmallerThan500}
