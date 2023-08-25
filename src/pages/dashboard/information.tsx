@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   Container,
@@ -9,38 +9,68 @@ import {
   Flex,
   Image,
   Button,
-} from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+  Link,
+} from "@chakra-ui/react";
+
+import { useRouter } from "next/router";
 
 const Information = () => {
-  const router = useRouter()
+  const router = useRouter();
+
   const goToDashboard = () => {
-    void router.push("/dashboard")
-  }
+    void router.push("/dashboard");
+  };
   return (
     <Container w="100%" alignSelf="center">
       <Flex h="100%" align="center" justifyContent="center">
         <Box flex={1} maxW="600px">
           <VStack spacing={8} align="stretch" py={8}>
             <Heading size="xl" textAlign="center" mb={4}>
-              Welcome to internal grants tool creation
+              Welcome Tech Optimum&apos;s Grant Tool Platform
             </Heading>
             <Text fontSize="lg" textAlign="center">
-              This tool empowers students by giving them a platform to easily find the best grants available, hand picked by our qualified Grant Writers
+              If you've stumbled upon this page and you don't have any idea
+              what's happening please contact the administrator of this site.
+              Otherwise, you must be a grant writer! Please click the button
+              below to get started!
             </Text>
-            <Button mt={6} colorScheme="blue" size="lg" w="100%" onClick={goToDashboard}>
+            <Button
+              mt={6}
+              colorScheme="blue"
+              size="lg"
+              w="100%"
+              onClick={goToDashboard}
+            >
               Get Started
             </Button>
 
             <Divider />
 
             <Box>
-              <Heading size="lg">Streamline Grant Creation</Heading>
+              <Heading size="lg">Need someone to answer your question?</Heading>
               <Text>
-                Our tool provides an intuitive and user-friendly interface that
-                simplifies the grant creation process. Easily define grant
-                criteria, requirements, and deadlines for efficient grant
-                management.
+                Please communicate through slack where our main form of
+                communicatin is. If you have any questions, please contact the
+                admins who will be
+                <Link
+                  fontWeight={"700"}
+                  href={"mailto:pranith@techoptimum.org"}
+                >
+                  {" "}
+                  Pranith - pranith@techoptimum.org
+                </Link>
+                , Siddharth -{" "}
+                <Link
+                  fontWeight={"700"}
+                  href={"mailto:siddharth@techoptimum.org"}
+                >
+                  siddharth@techoptimum.org
+                </Link>
+                , Aditya -
+                <Link fontWeight={"700"} href={"mailto:aditya@techoptimum.org"}>
+                  aditya@techoptimum.org
+                </Link>
+                .
               </Text>
             </Box>
 

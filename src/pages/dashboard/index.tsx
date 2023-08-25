@@ -36,6 +36,7 @@ export default function Page() {
     <>
       <Head>
         <title>Dashboard | TechOptimum Grants Writing Tool</title>
+        <meta name="description" content="Tech Optimum Grants Writing Tool" />
       </Head>
       <Text fontSize="5xl" fontWeight="bold" mb="0.3rem">
         Latest Grants
@@ -60,10 +61,28 @@ export default function Page() {
               )
           )
         ) : (
-          <Text>No grants for now.</Text>
+          <>
+            <Head>
+              <title>No Grants for now | TechOptimum Grants Writing Tool</title>
+              <meta
+                name="description"
+                content="Tech Optimum Grants Writing Tool"
+              />
+            </Head>
+            <Text>No grants for now.</Text>
+          </>
         )
       ) : (
-        <Text>Loading grants...</Text>
+        <>
+          <Head>
+            <title>Loading Grants... | TechOptimum Grants Writing Tool</title>
+            <meta
+              name="description"
+              content="Tech Optimum Grants Writing Tool"
+            />
+          </Head>
+          <Text>Loading grants...</Text>
+        </>
       )}
     </>
   );
@@ -90,7 +109,10 @@ const Grant = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const hoverColor = useColorModeValue("rgb(240,240,240)", "whiteAlpha.100");
-  const availabilityColor = useColorModeValue("blackAlpha.700", "whiteAlpha.500");
+  const availabilityColor = useColorModeValue(
+    "blackAlpha.700",
+    "whiteAlpha.500"
+  );
 
   const router = useRouter();
 

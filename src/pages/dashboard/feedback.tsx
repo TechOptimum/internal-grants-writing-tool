@@ -1,19 +1,31 @@
 import Head from "next/head";
-import { Text } from "@chakra-ui/react";
+import { Text, Link } from "@chakra-ui/react";
 
 export default function Page() {
   return (
     <>
       <Head>
-        <title>Dashboard | TechOptimum Grants Writing Tool</title>
+        <title>Feedback | TechOptimum Grants Writing Tool</title>
       </Head>
       <Text fontSize="5xl" fontWeight="bold" mb="0.3rem">
         How to get feedback after submitting a grant request?
       </Text>
       <Text>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. At ipsam
-        quibusdam iure, quo nostrum vero tempora animi quos, velit eaque quae
-        beatae harum voluptatem libero nobis assumenda maxime blanditiis ex.
+        Slack is our main form of communication we can dicuss your feedback. If
+        you do not have access to Slack please contact the admins who will be
+        Pranith -{" "}
+        <Link fontWeight={"700"} href={"mailto:pranith@techoptimum.org"}>
+          pranith@techoptimum.org
+        </Link>
+        , Siddharth -{" "}
+        <Link fontWeight={"700"} href={"mailto:siddharth@techoptimum.org"}>
+          siddharth@techoptimum.org
+        </Link>
+        , Aditya -
+        <Link fontWeight={"700"} href={"mailto:aditya@techoptimum.org"}>
+          aditya@techoptimum.org
+        </Link>
+        <div className=""></div>
       </Text>
     </>
   );
