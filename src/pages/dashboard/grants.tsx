@@ -18,6 +18,7 @@ import {
   ModalCloseButton,
   useDisclosure,
   Divider,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import { useState } from "react";
@@ -25,6 +26,7 @@ import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
 import type { UserResource } from "@clerk/types";
 import { UploadButton } from "~/components/utils/uploadthing";
+
 
 export default function Page() {
   const { isLoaded, user } = useUser();
@@ -82,6 +84,8 @@ const Grant = ({
 
   const grantUpload = api.grants.createUpload.useMutation();
 
+  const footerColor = useColorModeValue("#fff", "blackAlpha.700");
+
   return (
     <>
       <Button h="auto" p="0px" my="0.3rem" w="100%" onClick={onOpen}>
@@ -103,7 +107,7 @@ const Grant = ({
               </CardHeader>
               <CardBody textAlign="start">Amount: ${amount}</CardBody>
               <CardFooter
-                color="blackAlpha.700"
+                color={footerColor}
                 fontWeight="medium"
                 textAlign="start"
               >
