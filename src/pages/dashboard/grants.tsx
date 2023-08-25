@@ -84,7 +84,7 @@ const Grant = ({
 
   const grantUpload = api.grants.createUpload.useMutation();
 
-  const footerColor = useColorModeValue("#fff", "blackAlpha.700");
+  const footerColor = useColorModeValue("blackAlpha.700", "whiteAlpha.700");
 
   return (
     <>
