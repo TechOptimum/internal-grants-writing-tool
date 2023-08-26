@@ -29,10 +29,10 @@ const Information = () => {
               Welcome Tech Optimum&apos;s Grant Tool Platform
             </Heading>
             <Text fontSize="lg" textAlign="center">
-              If you've stumbled upon this page and you don't have any idea
-              what's happening please contact the administrator of this site.
-              Otherwise, you must be a grant writer! Please click the button
-              below to get started!
+              If you&apos;ve stumbled upon this page and you don&apos;t have any
+              idea what&apos;s happening please contact the administrator of
+              this site. Otherwise, you must be a grant writer! Please click the
+              button below to get started!
             </Text>
             <Button
               mt={6}
