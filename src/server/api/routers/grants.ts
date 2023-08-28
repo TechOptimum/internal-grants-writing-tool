@@ -36,7 +36,7 @@ export const grantsRouter = createTRPCRouter({
   deleteGrant: adminProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      ctx.prisma.uploads.deleteMany({
+      await ctx.prisma.uploads.deleteMany({
         where: {
           grantId: input.id,
         }
