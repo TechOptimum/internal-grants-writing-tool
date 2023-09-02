@@ -30,7 +30,7 @@ export default function NavBar({ isOpen, onToggle }: NavBarProps) {
       py="0.9rem"
       align="center"
       justify="space-between"
-      borderColor={colorMode === "light" ? "gray.500" : "gray.700"}
+      borderColor={colorMode === "light" ? "gray.600" : "gray.700"}
     >
       <HStack>
         {!isSmallerThan500 ? (

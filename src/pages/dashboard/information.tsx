@@ -26,26 +26,53 @@ const Information = () => {
         <Box flex={1} maxW="600px">
           <VStack spacing={8} align="stretch" py={8}>
             <Heading size="xl" textAlign="center" mb={4}>
-              Welcome Tech Optimum&apos;s Grant Tool Platform
+              Tech Optimum&apos;s Grant Writing Support Resources
             </Heading>
             <Text fontSize="lg" textAlign="center">
-              If you&apos;ve stumbled upon this page and you don&apos;t have any
-              idea what&apos;s happening please contact the administrator of
-              this site. Otherwise, you must be a grant writer! Please click the
-              button below to get started!
+              <strong>Tech Optimum&apos;s Objective: </strong> To provide
+              quality programming education that will help students grow in the
+              technology industry.
             </Text>
-            <Button
-              mt={6}
-              colorScheme="blue"
-              size="lg"
-              w="100%"
-              onClick={goToDashboard}
-            >
-              Get Started
-            </Button>
-
+            <Text fontSize="lg" textAlign="center">
+              <strong>Tech Optimum&apos;s Mission: </strong>Tech Optimum is
+              committed to bridging the digital divide by providing an online
+              learning platform, resources, and tools dedicated to computer
+              science education for students across the globe
+            </Text>
             <Divider />
-
+            <Link
+              fontSize={"18px"}
+              fontWeight={"600"}
+              href="https://docs.google.com/document/d/1sAPrPKICpG-6t7qq9ufuWc4SVuuw1pRgCnJevJ9MekI/edit?usp=sharing"
+              target="_blank"
+            >
+              You can access our Business Plan here
+            </Link>
+            <Link
+              fontSize={"18px"}
+              fontWeight={"600"}
+              href="https://docs.google.com/spreadsheets/d/1glddk6CexUxHDI_MTN3uVikYTqmEqENpyCfSkLiN8_k/edit?usp=sharing"
+              target="_blank"
+            >
+              You can access our Budget Sheet here
+            </Link>
+            <Link
+              fontSize={"18px"}
+              fontWeight={"600"}
+              href="https://drive.google.com/file/d/1SRjOhIPpeHCuNbV4PFbDFmWBAlCnSQWj/view?usp=sharing"
+              target="_blank"
+            >
+              You can access Final Letter here
+            </Link>
+            <Link
+              fontSize={"18px"}
+              fontWeight={"600"}
+              href="https://drive.google.com/file/d/1y3ckvU_t-8yVYe9MTTOZvfHD7l118A16/view?usp=sharing"
+              target="_blank"
+            >
+              You can access our EIN document here
+            </Link>
+            <Divider />
             <Box>
               <Heading size="lg">Need someone to answer your question?</Heading>
               <Text>
@@ -73,17 +100,16 @@ const Information = () => {
                 .
               </Text>
             </Box>
-
-            {/* Rest of the sections */}
-            {/* Customize Applications, Collaborative Review, Automated Notifications, Track Progress */}
-
-            <Box>
-              <Heading size="lg">Ready to Get Started?</Heading>
-              <Text>
-                Revolutionize your grant creation process today. Sign up for our
-                tool and experience the benefits of efficient grant management.
-              </Text>
-            </Box>
+            <Divider />
+            <Button
+              mt={6}
+              colorScheme="blue"
+              size="lg"
+              w="100%"
+              onClick={goToDashboard}
+            >
+              Get Started
+            </Button>
           </VStack>
         </Box>
       </Flex>
