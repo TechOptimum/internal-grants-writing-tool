@@ -106,7 +106,7 @@ export default function SideBar({ isOpen, onClose, onToggle }: SideBarProps) {
             </DrawerBody>
             <DrawerFooter borderTopWidth="1px">
               <MobileNavLink
-                href="/dashboard"
+                href="/dashboard/information"
                 icon={<HiOutlineInformationCircle size={20} />}
               >
                 Information
