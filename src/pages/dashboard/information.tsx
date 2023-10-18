@@ -85,7 +85,7 @@ const Information = () => {
                 >
                   siddharth@techoptimum.org
                 </Link>
-                and Aditya -
+               {" "}and Aditya -
                 <Link fontWeight={"700"} href={"mailto:aditya@techoptimum.org"}>
                   aditya@techoptimum.org
                 </Link>
