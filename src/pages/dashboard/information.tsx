@@ -78,22 +78,14 @@ const Information = () => {
               <Text>
                 Please communicate through slack where our main form of
                 communicatin is. If you have any questions, please contact the
-                admins who will be
-                <Link
-                  fontWeight={"700"}
-                  href={"mailto:pranith@techoptimum.org"}
-                >
-                  {" "}
-                  Pranith - pranith@techoptimum.org
-                </Link>
-                , Siddharth -{" "}
+                admins: Siddharth -{" "}
                 <Link
                   fontWeight={"700"}
                   href={"mailto:siddharth@techoptimum.org"}
                 >
                   siddharth@techoptimum.org
                 </Link>
-                , Aditya -
+                and Aditya -
                 <Link fontWeight={"700"} href={"mailto:aditya@techoptimum.org"}>
                   aditya@techoptimum.org
                 </Link>
